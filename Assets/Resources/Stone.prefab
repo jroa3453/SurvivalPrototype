@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8371522797894195439}
   - component: {fileID: 5874425904205246548}
   - component: {fileID: 729521803443415751}
+  - component: {fileID: -5419470705078801949}
   m_Layer: 5
   m_Name: Stone
   m_TagString: Untagged
@@ -101,3 +102,23 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &-5419470705078801949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6539569225657912983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4926e56b942c764092c60130ade2592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventroyItem
+  isTrashable: 1
+  thisName: Stone
+  thisDescription: Simple Stone
+  thisFunctionality: Used for crafting and other objects
+  isConsumable: 0
+  healthEffect: 0
+  caloriesEffect: 0
+  hydrationEffect: 0
