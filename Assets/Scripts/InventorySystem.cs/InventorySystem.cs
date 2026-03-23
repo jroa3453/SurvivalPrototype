@@ -1,23 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
- 
+ using UnityEngine.UI;
 public class InventorySystem : MonoBehaviour
 {
  
-   public static InventorySystem Instance { get; set; }
- 
+    public GameObject ItemInfoUI;
+    public static InventorySystem Instance { get; set; } 
     public GameObject inventoryScreenUI;
-
     public List<GameObject>slotList = new List<GameObject>();
-
     public List<string> itemList = new List<string>();
-
     private GameObject itemToAdd;
-
     private GameObject whatSlotToEquip;
-
     public bool isOpen;
+
+    //PickUp Alert
+    public GameObject pickupAlert;
+    public Text pickupName;
+    public Image pickupImage;
 
     //public bool isFull;
  
@@ -75,7 +75,6 @@ public class InventorySystem : MonoBehaviour
             isOpen = false;
         }
     }
-
     public void AddToInventory(string itemname)
 {
             whatSlotToEquip = FindNextEmptySlot();
@@ -97,8 +96,27 @@ public class InventorySystem : MonoBehaviour
 
             Debug.Log("Added to inventory: " + itemname);
             Debug.Log("Current itemList: " + string.Join(", ", itemList));
+
+            TriggerPickupAlert(itemname, itemToAdd.GetComponent<Image>().sprite);
 }
 
+void TriggerPickupAlert(string itemName, Sprite itemSprite)
+    {
+        pickupName.text = itemName;
+
+        pickupImage.sprite = itemSprite;
+
+        pickupAlert.SetActive(true);
+        
+        StartCoroutine(HidePickupAlertAfterDelay(2f));
+    }
+
+    private IEnumerator HidePickupAlertAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        pickupAlert.SetActive(false);
+    }
     private GameObject FindNextEmptySlot()
 {
             foreach (GameObject slot in slotList)
@@ -111,7 +129,6 @@ public class InventorySystem : MonoBehaviour
 
             return null;
     }
-
             public bool CheckIfFull()
             {
                 int counter = 0;
@@ -132,7 +149,6 @@ public class InventorySystem : MonoBehaviour
                         return false;
                     }      
     }
-
     public void RemoveItem(string nameToRemove, int amountToRemove)
     {
         int counter = amountToRemove;
@@ -149,7 +165,6 @@ public class InventorySystem : MonoBehaviour
             }
         }
     }
-
     public void ReCalculateList()
     {
         itemList.Clear();

@@ -129,7 +129,7 @@ void Update()
     }
 }
 
-private void RefreshNeededItems()
+public void RefreshNeededItems()
 {
     if (InventorySystem.Instance == null)
     {
