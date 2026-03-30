@@ -4,136 +4,72 @@ using UnityEngine.UI;
 
 public class TrashSlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [Header("UI References")]
     public GameObject trashAlertUI;
-    public Text promptText;
+    public Text messageText;
+
     public Button yesButton;
     public Button noButton;
-    public Image trashIconImage;
 
-    [Header("Trash Bin Sprites")]
-    public Sprite trashClosed;
-    public Sprite trashOpened;
+    public Sprite trash_closed;
+    public Sprite trash_opened;
 
-    private GameObject itemToBeDeleted;
-    private bool isPointerOverTrash = false;
+    private Image trashCanImage;
 
-    private GameObject DraggedItem
+    GameObject itemToBeDeleted;
+
+    GameObject draggedItem
     {
         get { return DragDrop.itemBeingDragged; }
     }
 
-    private void Start()
+    void Start()
     {
-        if (trashAlertUI != null)
-            trashAlertUI.SetActive(false);
+        // Get the trash can's own image
+        trashCanImage = transform.Find("background").GetComponent<Image>();
 
-        if (yesButton != null)
-            yesButton.onClick.AddListener(DeleteItem);
+        yesButton.onClick.AddListener(DeleteItem);
+        noButton.onClick.AddListener(CancelDeletion);
 
-        if (noButton != null)
-            noButton.onClick.AddListener(CancelDeletion);
-
-        SetClosedSprite();
-    }
-
-    private void Update()
-    {
-        if (isPointerOverTrash && DraggedItem != null)
-        {
-            InventoryItem inventoryItem = DraggedItem.GetComponent<InventoryItem>();
-            if (inventoryItem != null && inventoryItem.isTrashable)
-            {
-                SetOpenSprite();
-                return;
-            }
-        }
-
-        SetClosedSprite();
+        trashCanImage.sprite = trash_closed;
     }
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (DraggedItem == null)
-            return;
-
-        InventoryItem inventoryItem = DraggedItem.GetComponent<InventoryItem>();
-        if (inventoryItem == null || !inventoryItem.isTrashable)
-            return;
-
-        itemToBeDeleted = DraggedItem;
-        ShowDeletePrompt();
-
-        DragDrop.itemBeingDragged = null;
+        if (draggedItem != null && draggedItem.GetComponent<InventoryItem>().isTrashable)
+        {
+            itemToBeDeleted = draggedItem;
+            trashAlertUI.SetActive(true);
+            messageText.text = "Throw away this item?";
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        isPointerOverTrash = true;
+        if (draggedItem != null && draggedItem.GetComponent<InventoryItem>().isTrashable)
+        {
+            trashCanImage.sprite = trash_opened;
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        isPointerOverTrash = false;
+        trashCanImage.sprite = trash_closed;
     }
 
-    private void ShowDeletePrompt()
-    {
-        if (trashAlertUI != null)
-            trashAlertUI.SetActive(true);
-
-        if (promptText != null)
-            promptText.text = "Throw away this " + GetCleanItemName() + "?";
-    }
-
-    private string GetCleanItemName()
-    {
-        if (itemToBeDeleted == null)
-            return "item";
-
-        return itemToBeDeleted.name.Replace("(Clone)", "").Trim();
-    }
-
-    private void CancelDeletion()
-    {
-        SetClosedSprite();
-
-        if (trashAlertUI != null)
-            trashAlertUI.SetActive(false);
-
-        itemToBeDeleted = null;
-    }
-
-    private void DeleteItem()
+    void DeleteItem()
     {
         if (itemToBeDeleted != null)
         {
             Destroy(itemToBeDeleted);
-
-            if (InventorySystem.Instance != null)
-                InventorySystem.Instance.ReCalculateList();
-
-            if (CraftingSystem.Instance != null)
-                CraftingSystem.Instance.RefreshNeededItems();
         }
 
-        SetClosedSprite();
-
-        if (trashAlertUI != null)
-            trashAlertUI.SetActive(false);
-
-        itemToBeDeleted = null;
+        trashCanImage.sprite = trash_closed;
+        trashAlertUI.SetActive(false);
     }
 
-    private void SetClosedSprite()
+    void CancelDeletion()
     {
-        if (trashIconImage != null && trashClosed != null)
-            trashIconImage.sprite = trashClosed;
-    }
-
-    private void SetOpenSprite()
-    {
-        if (trashIconImage != null && trashOpened != null)
-            trashIconImage.sprite = trashOpened;
+        trashCanImage.sprite = trash_closed;
+        trashAlertUI.SetActive(false);
     }
 }

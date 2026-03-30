@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 649165938051307759}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0.26, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -194,6 +194,7 @@ GameObject:
   - component: {fileID: 1870679391148259636}
   - component: {fileID: 5431186382957868230}
   - component: {fileID: 5496693637448187073}
+  - component: {fileID: 940373742735846470}
   m_Layer: 0
   m_Name: PT_Pine_Tree_03_green
   m_TagString: Untagged
@@ -281,6 +282,29 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 7.5296187, z: 1}
   m_Center: {x: 0, y: 3.2648094, z: 0}
+--- !u!136 &940373742735846470
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6117071349010126079}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.68
+  m_Height: 5.7
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.01, z: 0}
 --- !u!1 &8169898343365794049
 GameObject:
   m_ObjectHideFlags: 0

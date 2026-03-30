@@ -1,37 +1,46 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class CraftingSystem : MonoBehaviour
 {
-
     public static CraftingSystem Instance { get; set; }
 
+    [Header("Main UI Screens")]
     [SerializeField] private GameObject craftingScreenUI;
     [SerializeField] private GameObject toolsScreenUI;
+    [SerializeField] private GameObject survivalScreenUI;
+    [SerializeField] private GameObject refineScreenUI;
+
+    [Header("Category Screens")]
+    [SerializeField] private GameObject ToolsCategoryScreen;
+    [SerializeField] private GameObject SurvivalCategoryScreen;
+    [SerializeField] private GameObject RefineCategoryScreen;
+
+    [Header("Category Buttons")]
+    [SerializeField] private Button toolsBTN;
+    [SerializeField] private Button survivalBTN;
+    [SerializeField] private Button refineBTN;
+
+    [Header("Craft Buttons")]
+    [SerializeField] private Button craftAxeBTN;
+    [SerializeField] private Button craftPlankBTN;
+
+    [Header("Requirement Text")]
+    [SerializeField] private Text AxeReq1;
+    [SerializeField] private Text AxeReq2;
+    [SerializeField] private Text PlankReq1;
 
     public List<string> inventoryItemList = new List<string>();
 
-    //Category Buttons
-    [SerializeField] private Button toolsBTN;
-
-    //Craft Buttons
-    [SerializeField] private Button craftAxeBTN;
-
-    //Requirment Text
-   [SerializeField] private Text AxeReq1;
-   [SerializeField] private Text AxeReq2;
-   [SerializeField] private GameObject ToolsCategoryScreen;
-
     public bool isOpen;
 
-    //All BluePrints
+    [Header("Blueprints")]
+    public BluePrint AxeBLP = new BluePrint("Axe", 1, 2, "Stone", 3, "Stick", 3);
+    public BluePrint PlankBLP = new BluePrint("Plank", 2, 1, "Log", 1, "", 0);
 
-    public BluePrint AxeBLP = new BluePrint("Axe", 2, "Stone", 3, "Stick", 3);
-
-
-    void Awake()
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -43,167 +52,282 @@ public class CraftingSystem : MonoBehaviour
         }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-
-        if(!CraftingSystem.Instance.isOpen)
+        if (!isOpen)
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
 
         isOpen = false;
-        craftAxeBTN.onClick.AddListener(delegate {CraftAnyItem(AxeBLP);});
+
         toolsBTN.onClick.AddListener(OpenToolsCategory);
+        survivalBTN.onClick.AddListener(OpenSurvivalCategory);
+        refineBTN.onClick.AddListener(OpenRefineCategory);
 
+        craftAxeBTN.onClick.AddListener(() => CraftAnyItem(AxeBLP));
+        craftPlankBTN.onClick.AddListener(() => CraftAnyItem(PlankBLP));
     }
 
-
-void CraftAnyItem(BluePrint bluePrintToCraft)
-{
-    InventorySystem.Instance.AddToInventory(bluePrintToCraft.itemName);
-
-    if (bluePrintToCraft.numbofRequirments >= 1)
+    private void Update()
     {
-        InventorySystem.Instance.RemoveItem(bluePrintToCraft.Req1, bluePrintToCraft.Req1amount);
+        if (isOpen)
+        {
+            RefreshNeededItems();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (!isOpen)
+            {
+                OpenCrafting();
+            }
+            else
+            {
+                CloseCrafting();
+            }
+        }
     }
 
-    if (bluePrintToCraft.numbofRequirments >= 2)
-    {
-        InventorySystem.Instance.RemoveItem(bluePrintToCraft.Req2, bluePrintToCraft.Req2amount);
-    }
-
-    StartCoroutine(calculate());
-    
-    RefreshNeededItems();
-}
-
-
-void OpenToolsCategory()
-    {
-        ToolsCategoryScreen.SetActive(false);
-
-        toolsScreenUI.SetActive(true);
-
-        RefreshNeededItems();
-    }
-
-
-
-
-    public IEnumerator calculate()
-    {
-        yield return new WaitForSeconds(1f);
-
-        InventorySystem.Instance.ReCalculateList();
-    }
-
-    // Update is called once per frame
-void Update()
-{
-    if (isOpen && toolsScreenUI.activeSelf)
-    {
-        RefreshNeededItems();
-    }
-
-    if (Input.GetKeyDown(KeyCode.Tab) && !isOpen)
+    public void OpenCrafting()
     {
         craftingScreenUI.SetActive(true);
+
         ToolsCategoryScreen.SetActive(true);
+        SurvivalCategoryScreen.SetActive(false);
+        RefineCategoryScreen.SetActive(false);
+
         toolsScreenUI.SetActive(false);
+        survivalScreenUI.SetActive(false);
+        refineScreenUI.SetActive(false);
+
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        SelectionManager.Instance.DisableSelection();
+        SelectionManager.Instance.GetComponent<SelectionManager>().enabled = false;
+
         isOpen = true;
     }
-    else if (Input.GetKeyDown(KeyCode.Tab) && isOpen)
+
+    public void CloseCrafting()
     {
         craftingScreenUI.SetActive(false);
+
         ToolsCategoryScreen.SetActive(false);
+        SurvivalCategoryScreen.SetActive(false);
+        RefineCategoryScreen.SetActive(false);
+
         toolsScreenUI.SetActive(false);
+        survivalScreenUI.SetActive(false);
+        refineScreenUI.SetActive(false);
+
+        isOpen = false;
 
         if (!InventorySystem.Instance.isOpen)
         {
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            SelectionManager.Instance.EnableSelection();
+            SelectionManager.Instance.GetComponent<SelectionManager>().enabled = true;
         }
-
-        isOpen = false;
-    }
-}
-
-public void RefreshNeededItems()
-{
-    if (InventorySystem.Instance == null)
-    {
-        Debug.LogError("InventorySystem.Instance is null");
-        return;
     }
 
-    if (InventorySystem.Instance.itemList == null)
+    private void OpenToolsCategory()
     {
-        Debug.LogError("InventorySystem.Instance.itemList is null");
-        return;
+        ToolsCategoryScreen.SetActive(false);
+        SurvivalCategoryScreen.SetActive(false);
+        RefineCategoryScreen.SetActive(false);
+
+        toolsScreenUI.SetActive(true);
+        survivalScreenUI.SetActive(false);
+        refineScreenUI.SetActive(false);
+
+        RefreshNeededItems();
     }
 
-    if (AxeReq1 == null)
+    private void OpenSurvivalCategory()
     {
-        Debug.LogError("AxeReq1 is null");
-        return;
+        ToolsCategoryScreen.SetActive(false);
+        SurvivalCategoryScreen.SetActive(false);
+        RefineCategoryScreen.SetActive(false);
+
+        toolsScreenUI.SetActive(false);
+        survivalScreenUI.SetActive(true);
+        refineScreenUI.SetActive(false);
+
+        RefreshNeededItems();
     }
 
-    if (AxeReq2 == null)
+    private void OpenRefineCategory()
     {
-        Debug.LogError("AxeReq2 is null");
-        return;
+        ToolsCategoryScreen.SetActive(false);
+        SurvivalCategoryScreen.SetActive(false);
+        RefineCategoryScreen.SetActive(false);
+
+        toolsScreenUI.SetActive(false);
+        survivalScreenUI.SetActive(false);
+        refineScreenUI.SetActive(true);
+
+        RefreshNeededItems();
     }
 
-    if (craftAxeBTN == null)
+    private void CraftAnyItem(BluePrint bluePrintToCraft)
     {
-        Debug.LogError("craftAxeBTN is null");
-        return;
-    }
-
-    int stone_count = 0;
-    int stick_count = 0;
-
-    inventoryItemList = InventorySystem.Instance.itemList;
-
-    foreach (string itemName in inventoryItemList)
-    {
-        if (itemName == "Stone")
+        for (int i = 0; i < bluePrintToCraft.numberOfItemsProduce; i++)
         {
-            stone_count++;
+            InventorySystem.Instance.AddToInventory(bluePrintToCraft.itemName);
         }
-        else if (itemName == "Stick")
+
+        if (bluePrintToCraft.numbofRequirments >= 1)
         {
-            stick_count++;
+            RemoveItemFromInventoryAndQuickSlots(bluePrintToCraft.Req1, bluePrintToCraft.Req1amount);
         }
+
+        if (bluePrintToCraft.numbofRequirments >= 2)
+        {
+            RemoveItemFromInventoryAndQuickSlots(bluePrintToCraft.Req2, bluePrintToCraft.Req2amount);
+        }
+
+        StartCoroutine(Calculate());
+        RefreshNeededItems();
     }
 
-    AxeReq1.text = AxeBLP.Req1amount + " " + AxeBLP.Req1 + " [" + stone_count + "]";
-    AxeReq2.text = AxeBLP.Req2amount + " " + AxeBLP.Req2 + " [" + stick_count + "]";
+    private void RemoveItemFromInventoryAndQuickSlots(string itemName, int amount)
+    {
+        int remaining = amount;
 
-    craftAxeBTN.interactable = stone_count >= AxeBLP.Req1amount && stick_count >= AxeBLP.Req2amount;
-
-    Debug.Log("Req1 text is now: " + AxeReq1.text);
-    Debug.Log("Req2 text is now: " + AxeReq2.text);
-
-    bool hasReq1 = stone_count >= AxeBLP.Req1amount;
-    bool hasReq2 = stick_count >= AxeBLP.Req2amount;
-    bool hasAllRequirements = stone_count >= AxeBLP.Req1amount && 
-                            stick_count >= AxeBLP.Req2amount;
-
-    AxeReq1.color = hasReq1 ? Color.green : Color.red;
-    AxeReq2.color = hasReq2 ? Color.green : Color.red;
-
-        if (hasReq1 && hasReq2)
-         {
-             craftAxeBTN.interactable = true;
-         }
-         else
-          {
-             craftAxeBTN.interactable = false;
-          }
+        //produce amount of items according to blueprint
+        for (int i = InventorySystem.Instance.itemList.Count - 1; i >= 0; i--)
         {
-            craftAxeBTN.gameObject.SetActive(hasAllRequirements);
+            if (remaining <= 0)
+            {
+                break;
+            }
+
+            if (InventorySystem.Instance.itemList[i] == itemName)
+            {
+                InventorySystem.Instance.RemoveItem(itemName, 1);
+                remaining--;
+            }
         }
- }
+
+        if (remaining > 0)
+        {
+            foreach (GameObject slot in EquipSystem.Instance.quickSlotsList)
+            {
+                if (remaining <= 0)
+                {
+                    break;
+                }
+
+                if (slot.transform.childCount > 0)
+                {
+                    GameObject itemInSlot = slot.transform.GetChild(0).gameObject;
+                    string cleanName = itemInSlot.name.Replace("(Clone)", "");
+
+                    if (cleanName == itemName)
+                    {
+                        Destroy(itemInSlot);
+                        remaining--;
+                    }
+                }
+            }
+        }
+
+        InventorySystem.Instance.ReCalculateList();
+    }
+
+    private IEnumerator Calculate()
+    {
+        yield return new WaitForSeconds(1f);
+        InventorySystem.Instance.ReCalculateList();
+    }
+
+    public void RefreshNeededItems()
+    {
+        if (InventorySystem.Instance == null)
+        {
+            Debug.LogError("InventorySystem.Instance is null");
+            return;
+        }
+
+        if (InventorySystem.Instance.itemList == null)
+        {
+            Debug.LogError("InventorySystem.Instance.itemList is null");
+            return;
+        }
+
+        if (AxeReq1 == null || AxeReq2 == null || PlankReq1 == null)
+        {
+            Debug.LogError("One or more requirement text references are null");
+            return;
+        }
+
+        if (craftAxeBTN == null || craftPlankBTN == null)
+        {
+            Debug.LogError("One or more craft button references are null");
+            return;
+        }
+
+        int stoneCount = 0;
+        int stickCount = 0;
+        int logCount = 0;
+
+        inventoryItemList = InventorySystem.Instance.itemList;
+
+        foreach (string itemName in inventoryItemList)
+        {
+            if (itemName == "Stone")
+            {
+                stoneCount++;
+            }
+            else if (itemName == "Stick")
+            {
+                stickCount++;
+            }
+            else if (itemName == "Log")
+            {
+                logCount++;
+            }
+        }
+
+        foreach (GameObject slot in EquipSystem.Instance.quickSlotsList)
+        {
+            if (slot.transform.childCount > 0)
+            {
+                GameObject itemInSlot = slot.transform.GetChild(0).gameObject;
+                string cleanName = itemInSlot.name.Replace("(Clone)", "");
+
+                if (cleanName == "Stone")
+                {
+                    stoneCount++;
+                }
+                else if (cleanName == "Stick")
+                {
+                    stickCount++;
+                }
+                else if (cleanName == "Log")
+                {
+                    logCount++;
+                }
+            }
+        }
+
+        bool hasStone = stoneCount >= AxeBLP.Req1amount;
+        bool hasStick = stickCount >= AxeBLP.Req2amount;
+        bool hasLog = logCount >= PlankBLP.Req1amount;
+
+        AxeReq1.text = AxeBLP.Req1amount + " " + AxeBLP.Req1 + " [" + stoneCount + "]";
+        AxeReq2.text = AxeBLP.Req2amount + " " + AxeBLP.Req2 + " [" + stickCount + "]";
+        PlankReq1.text = PlankBLP.Req1amount + " " + PlankBLP.Req1 + " [" + logCount + "]";
+
+        AxeReq1.color = hasStone ? Color.green : Color.red;
+        AxeReq2.color = hasStick ? Color.green : Color.red;
+        PlankReq1.color = hasLog ? Color.green : Color.red;
+
+        craftAxeBTN.interactable = hasStone && hasStick;
+        craftPlankBTN.interactable = hasLog;
+    }
 }

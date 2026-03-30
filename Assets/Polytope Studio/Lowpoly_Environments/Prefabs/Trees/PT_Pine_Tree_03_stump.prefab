@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2311925644611836766}
   - component: {fileID: 1709757669461153019}
   - component: {fileID: 3485417514373718065}
-  - component: {fileID: 5416160874654504334}
   - component: {fileID: 3442321903123173529}
+  - component: {fileID: 5638961915017025626}
   m_Layer: 0
   m_Name: PT_Pine_Tree_03_stump
   m_TagString: Untagged
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3125019525012259300}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 8.737581, y: 5.376994, z: 8.197233}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -92,8 +92,22 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5416160874654504334
-BoxCollider:
+--- !u!114 &3442321903123173529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3125019525012259300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 703f31359ba4b9d41ad15ea41acde11f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
+  playerInRange: 0
+  ItemName: TreeStump
+--- !u!136 &5638961915017025626
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -110,20 +124,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.3955293, y: 1.1504762, z: 0.72708654}
+  serializedVersion: 2
+  m_Radius: 0.64
+  m_Height: 2.02
+  m_Direction: 1
   m_Center: {x: 0.020702675, y: 0.05083403, z: 0.04029517}
---- !u!114 &3442321903123173529
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3125019525012259300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 703f31359ba4b9d41ad15ea41acde11f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  playerInRange: 0
-  ItemName: TreeStump

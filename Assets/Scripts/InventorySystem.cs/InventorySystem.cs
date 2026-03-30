@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.AccessControl;
 using UnityEngine;
  using UnityEngine.UI;
 public class InventorySystem : MonoBehaviour
@@ -41,6 +42,9 @@ public class InventorySystem : MonoBehaviour
 
         PopulateSlotList();
 
+
+        Cursor.visible = false;
+
     }
 
 
@@ -58,6 +62,21 @@ public class InventorySystem : MonoBehaviour
 
     void Update()
     {
+
+         if (Input.GetKeyDown(KeyCode.Escape))
+    {
+        // Close Inventory
+        if (isOpen)
+        {
+            CloseInventory();
+        }
+
+        // Close Crafting
+        if (CraftingSystem.Instance.isOpen)
+        {
+            CraftingSystem.Instance.CloseCrafting();
+        }
+    }
  
         if (Input.GetKeyDown(KeyCode.I) && !isOpen)
         {
@@ -65,6 +84,11 @@ public class InventorySystem : MonoBehaviour
 		    Debug.Log("i is pressed");
             inventoryScreenUI.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            SelectionManager.Instance.DisableSelection();
+            SelectionManager.Instance.GetComponent<SelectionManager>().enabled = false;
+
             isOpen = true;
  
         }
@@ -72,6 +96,11 @@ public class InventorySystem : MonoBehaviour
         {
             inventoryScreenUI.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            SelectionManager.Instance.EnableSelection();
+            SelectionManager.Instance.GetComponent<SelectionManager>().enabled = true;
+
             isOpen = false;
         }
     }
@@ -98,6 +127,22 @@ public class InventorySystem : MonoBehaviour
             Debug.Log("Current itemList: " + string.Join(", ", itemList));
 
             TriggerPickupAlert(itemname, itemToAdd.GetComponent<Image>().sprite);
+}
+
+public void CloseInventory()
+{
+    inventoryScreenUI.SetActive(false);
+    isOpen = false;
+
+    //Ony hide cursor if NOTHING else is open
+    if (!CraftingSystem.Instance.isOpen)
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        SelectionManager.Instance.EnableSelection();
+        SelectionManager.Instance.GetComponent<SelectionManager>().enabled = true;
+    }
 }
 
 void TriggerPickupAlert(string itemName, Sprite itemSprite)

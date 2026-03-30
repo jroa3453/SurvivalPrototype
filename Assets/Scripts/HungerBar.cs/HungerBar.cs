@@ -5,29 +5,29 @@ using System.Collections.Generic;
 public class HungerBar : MonoBehaviour
 {
     
-    public Text hungerCounter;
+    public Text caloriesCounter;
 
     private Slider slider;
 
     public GameObject playerState;
 
-    private float currentHunger;
-    private float maxHunger;
+    private float currentCalories;
+    private float maxCalories;
 
     void Awake()
     {
        slider = GetComponent<Slider>();
-       hungerCounter = GetComponentInChildren<Text>(); 
+       caloriesCounter = GetComponentInChildren<Text>(); 
     }
 
     
     void Update()
     {
-        currentHunger = playerState.GetComponent<PlayerState>().currentHunger;
-        maxHunger = playerState.GetComponent<PlayerState>().maxHunger;
+        currentCalories = playerState.GetComponent<PlayerState>().currentCalories;
+        maxCalories = playerState.GetComponent<PlayerState>().maxCalories;
 
-        float fillValue = currentHunger / maxHunger;
+        float fillValue = currentCalories / maxCalories;
         slider.value = fillValue;
-        hungerCounter.text = currentHunger + " / " + maxHunger;
+        caloriesCounter.text = currentCalories + " / " + maxCalories;
     }
 }
