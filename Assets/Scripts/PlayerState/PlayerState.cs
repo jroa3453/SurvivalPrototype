@@ -11,8 +11,8 @@ public class PlayerState : MonoBehaviour
     public float maxHealth;
 
     // Player Hunger
-    public float currentHunger;
-    public float maxHunger;
+    public float currentCalories;
+    public float maxCalories;
 
     // Player Hydration
     public float currentHydrationPercent;
@@ -38,7 +38,7 @@ public class PlayerState : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        currentHunger = maxHunger;
+        currentCalories = maxCalories;
         currentHydrationPercent = maxHydrationPercent;
 
         if (playerModel != null)
@@ -58,7 +58,7 @@ public class PlayerState : MonoBehaviour
 
         if (distanceTraveled >= 10f)
         {
-            currentHunger -= 5f;
+            currentCalories -= 5f;
             distanceTraveled = 0f;
         }
 
@@ -69,7 +69,7 @@ public class PlayerState : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            currentHunger -= 10f;
+            currentCalories -= 10f;
         }
 
         if (Input.GetKeyDown(KeyCode.J))
@@ -78,7 +78,7 @@ public class PlayerState : MonoBehaviour
         }
 
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-        currentHunger = Mathf.Clamp(currentHunger, 0f, maxHunger);
+        currentCalories = Mathf.Clamp(currentCalories, 0f, maxCalories);
         currentHydrationPercent = Mathf.Clamp(currentHydrationPercent, 0f, maxHydrationPercent);
     }
 
@@ -99,7 +99,7 @@ public class PlayerState : MonoBehaviour
 
     public void SetCalories(float value)
     {
-        currentHunger = Mathf.Clamp(value, 0f, maxHunger);
+        currentCalories = Mathf.Clamp(value, 0f, maxCalories);
     }
 
     public void SetHydration(float value)

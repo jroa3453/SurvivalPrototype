@@ -16,11 +16,15 @@ public class BluePrint
 
    public int numbofRequirments;
 
-   public BluePrint(string name, int reqNU, string R1, int R1num, string R2, int R2num )
+   public int numberOfItemsProduce;
+
+   public BluePrint(string name, int producedItems, int reqNU, string R1, int R1num, string R2, int R2num )
     {
         itemName = name;
 
         numbofRequirments = reqNU;
+
+        numberOfItemsProduce = producedItems;
 
         Req1 = R1;
         Req2 = R2;

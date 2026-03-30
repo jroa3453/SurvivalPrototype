@@ -32,6 +32,13 @@ public class InventoryItem : MonoBehaviour,
     public float caloriesEffect;
     public float hydrationEffect;
 
+    // ----- Equippaing ---- //
+    public bool isEquippable;
+    private GameObject itemPendingEquipping;
+    public bool isInsideQuickSlot;
+
+    public bool isSelected;
+
     private void Start()
     {
         if (InventorySystem.Instance == null)
@@ -51,6 +58,32 @@ public class InventoryItem : MonoBehaviour,
         itemInfoUI_itemName = itemInfoUI.transform.Find("itemName")?.GetComponent<Text>();
         itemInfoUI_itemDescription = itemInfoUI.transform.Find("itemDescription")?.GetComponent<Text>();
         itemInfoUI_itemFunctionality = itemInfoUI.transform.Find("itemFunctionality")?.GetComponent<Text>();
+    }
+
+    void Update()
+    {
+        if(isSelected)
+        {
+            gameObject.GetComponent<DragDrop>().enabled = false;
+        }
+        else
+        {
+            gameObject.GetComponent<DragDrop>().enabled = true;
+        }
+    }
+
+        public void Use()
+    {
+        Debug.Log("Using item: " + thisName);
+
+        // Example behavior
+        if (isConsumable)
+        {
+            Debug.Log("Item consumed");
+
+            // Optional: remove item from inventory
+            Destroy(gameObject);
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -74,16 +107,27 @@ public class InventoryItem : MonoBehaviour,
         if (itemInfoUI != null)
             itemInfoUI.SetActive(false);
     }
-
     public void OnPointerDown(PointerEventData eventData)
+{
+    if (eventData.button == PointerEventData.InputButton.Right)
     {
-        if (eventData.button == PointerEventData.InputButton.Right && isConsumable)
+        // Ctrl + Right Click = put item in quickslot
+            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+    {
+        Debug.Log("CTRL CLICK WORKS");
+
+        EquipSystem.Instance.AddToQuickSlots(gameObject);
+        return;
+    }
+
+        // Normal Right Click = consume
+        if (isConsumable)
         {
             itemPendingConsumption = gameObject;
             ConsumingFunction(healthEffect, caloriesEffect, hydrationEffect);
         }
     }
-
+}
     public void OnPointerUp(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)
@@ -135,8 +179,8 @@ public class InventoryItem : MonoBehaviour,
     {
         if (PlayerState.Instance == null) return;
 
-        float caloriesBeforeConsumption = PlayerState.Instance.currentHunger;
-        float maxCalories = PlayerState.Instance.maxHunger;
+        float caloriesBeforeConsumption = PlayerState.Instance.currentCalories;
+        float maxCalories = PlayerState.Instance.maxCalories;
 
         if (caloriesEffect != 0)
         {

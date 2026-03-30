@@ -50,18 +50,12 @@ public bool playerInRange;
         }
 
     }
-
-
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            
+
             playerInRange = false;
-
-
         }
-
     }
-
 }
