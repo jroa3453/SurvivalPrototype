@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8080363395980984523}
   - component: {fileID: 4382042478735842725}
   - component: {fileID: 4526115733290885901}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Axe_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,9 +28,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 148751841422058401}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.034879092, y: -0.7297421, z: 0.03733107, w: 0.68181103}
+  m_LocalRotation: {x: -0.0348792, y: -0.72973996, z: 0.03733596, w: 0.6818131}
   m_LocalPosition: {x: 29.273, y: 4.662, z: 64.518}
-  m_LocalScale: {x: 1, y: 1.5987, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
