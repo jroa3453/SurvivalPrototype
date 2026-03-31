@@ -1874,6 +1874,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Axe_Model
       objectReference: {fileID: 0}
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     - target: {fileID: 6968571421557366642, guid: 74f1cc3799359f945954517fec5d27aa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1907,6 +1908,15 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
 >>>>>>> Stashed changes
+=======
+    - target: {fileID: 6968571421557366642, guid: 74f1cc3799359f945954517fec5d27aa, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968571421557366642, guid: 74f1cc3799359f945954517fec5d27aa, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.16
+>>>>>>> d8685b0cfddebdb4362087df96743a0fb4ce511f
       objectReference: {fileID: 0}
     - target: {fileID: 6968571421557366642, guid: 74f1cc3799359f945954517fec5d27aa, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6718,11 +6728,15 @@ Transform:
   m_GameObject: {fileID: 906489546}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   m_LocalPosition: {x: 0.37500077, y: -0.467, z: 0.342}
 =======
   m_LocalPosition: {x: 0.439, y: -0.357, z: 0.433}
 >>>>>>> Stashed changes
+=======
+  m_LocalPosition: {x: 0.37500077, y: -0.467, z: 0.342}
+>>>>>>> d8685b0cfddebdb4362087df96743a0fb4ce511f
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15820,6 +15834,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 516f5b8c780f050499e83e3e45588ae9, type: 3}
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 --- !u!1001 &4330461374744786797
@@ -16001,6 +16016,8 @@ PrefabInstance:
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3cafdc31c3f6ac74bac4045c57a44289, type: 3}
 >>>>>>> Stashed changes
+=======
+>>>>>>> d8685b0cfddebdb4362087df96743a0fb4ce511f
 --- !u!1001 &8291916313809321000
 PrefabInstance:
   m_ObjectHideFlags: 0
