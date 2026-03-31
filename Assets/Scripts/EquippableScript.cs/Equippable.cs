@@ -23,10 +23,10 @@ public class EquippableItem : MonoBehaviour
             && CraftingSystem.Instance.isOpen == false
             && InventorySystem.Instance.isOpen == false)
         { 
-            // Guard check — only play if controller is actually assigned
             if (animator.runtimeAnimatorController != null)
             {
                 animator.Play("Axe_Hit");
+                GetHit(); // ADD THIS LINE
             }
         }  
     }
@@ -37,7 +37,7 @@ public class EquippableItem : MonoBehaviour
 
             if(selectedTree != null)
             {
-                selectedTree.GetComponentInParent<ChoppableTree>().GetHit();
+                selectedTree.GetComponent<ChoppableTree>().GetHit();
             }
     }
 }
