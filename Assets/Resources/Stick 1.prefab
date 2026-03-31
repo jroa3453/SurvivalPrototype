@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3195569351587988096}
   - component: {fileID: 2752979896330100139}
   m_Layer: 5
-  m_Name: Stick
+  m_Name: Stick 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
