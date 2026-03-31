@@ -15,6 +15,9 @@ public class ChoppableTree : MonoBehaviour
 
     public Animator animator;
 
+    //Audio
+    public AudioSource chopSound;
+    public AudioSource TreeFallingSound;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -53,6 +56,7 @@ public class ChoppableTree : MonoBehaviour
     public void GetHit()
     {
         animator.SetTrigger("shake");
+        chopSound.Play();
 
         treeHealth -= 10f;
         treeHealth = Mathf.Clamp(treeHealth, 0f, treeMaxHealth);
@@ -62,11 +66,13 @@ public class ChoppableTree : MonoBehaviour
         GlobalState.Instance.resourceMaxHealth = treeMaxHealth;
 
         Debug.Log("Tree health now: " + treeHealth);
+        Debug.Log("GetHit called!");
 
         if (treeHealth <= 0f)
         {
             Debug.Log("Tree has been chopped down");
-            
+            TreeFallingSound.Play();
+            Destroy(gameObject, TreeFallingSound.clip.length);
             TreeisDead();
         
 
@@ -78,8 +84,6 @@ public class ChoppableTree : MonoBehaviour
             {
                 Debug.Log("TreeisChopped script is NULL");
             }
-
-            gameObject.SetActive(false);
         }
     }
 
