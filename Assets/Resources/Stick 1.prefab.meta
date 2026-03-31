@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Resources/Stick 1.prefab.meta
 guid: 915580dec0ce7264baa3f437b3cd18fc
+========
+guid: 3cafdc31c3f6ac74bac4045c57a44289
+>>>>>>>> d8685b0cfddebdb4362087df96743a0fb4ce511f:Assets/Resources/Wooden_plank.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 
