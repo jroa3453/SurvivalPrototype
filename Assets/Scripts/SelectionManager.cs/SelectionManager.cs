@@ -61,6 +61,12 @@ public class SelectionManager : MonoBehaviour
                     choppableTree.canBeChopped = true;
                 }
 
+                AnimalHealth animal = selectionTransform.GetComponentInParent<AnimalHealth>();
+                if(animal != null)
+                {
+                    selectedObject = selectionTransform.gameObject;
+                }
+
                 // Always show bar and update health while looking at tree
                 chopHolder.SetActive(true);
                 GlobalState.Instance.resourceHealth    = choppableTree.treeHealth;
