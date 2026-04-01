@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 33549200689782822}
   - component: {fileID: 23195561613140738}
   - component: {fileID: 95191931964140260}
-  - component: {fileID: 136520287564245010}
   m_Layer: 0
   m_Name: Pine_tree1
   m_TagString: Untagged
@@ -28,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1693026570606076}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -68,8 +67,8 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
+  - {fileID: 2100000, guid: 7ed001e11f025264c8b5dfc5b0702319, type: 2}
   - {fileID: 2100000, guid: 8dbb16fd86f5b7248b93f86a4f121388, type: 2}
-  - {fileID: 2100000, guid: b09e7c2aeb26bb84cbfa0586ec3c5bbb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -103,7 +102,7 @@ Animator:
   m_GameObject: {fileID: 1693026570606076}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 852f9a79f7bf832408d4ed1eb088311a, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 55e67e97332ecb949b4a888bd882284b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -115,26 +114,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!136 &136520287564245010
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1693026570606076}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.79
-  m_Height: 19.388874
-  m_Direction: 1
-  m_Center: {x: 0.027983665, y: 7.91, z: 0}

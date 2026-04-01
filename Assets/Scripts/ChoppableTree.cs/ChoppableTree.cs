@@ -67,6 +67,8 @@ public class ChoppableTree : MonoBehaviour
 
         Debug.Log("Tree health now: " + treeHealth);
         Debug.Log("GetHit called!");
+        Debug.Log("resourceHealth: " + GlobalState.Instance.resourceHealth);
+        Debug.Log("resourceMaxHealth: " + GlobalState.Instance.resourceMaxHealth);
 
         if (treeHealth <= 0f)
         {

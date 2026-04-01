@@ -14,8 +14,10 @@ public class ResourceHealthBar : MonoBehaviour
     {
         if (GlobalState.Instance.resourceMaxHealth > 0)
         {
-            slider.value = GlobalState.Instance.resourceHealth 
-                         / GlobalState.Instance.resourceMaxHealth;
+            slider.value = GlobalState.Instance.resourceHealth / GlobalState.Instance.resourceMaxHealth;
+            Debug.Log("Slider value: " + slider.value);
+
+            Debug.Log("Max: " + GlobalState.Instance.resourceMaxHealth + " Current: " + GlobalState.Instance.resourceHealth);
         }
         else
         {
