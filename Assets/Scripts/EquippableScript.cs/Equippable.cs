@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(Animator))]
 public class EquippableItem : MonoBehaviour
@@ -26,9 +27,14 @@ public class EquippableItem : MonoBehaviour
             if (animator.runtimeAnimatorController != null)
             {
                 animator.Play("Axe_Hit");
-                GetHit(); // ADD THIS LINE
+                StartCoroutine(DelayedHit());
             }
         }  
+    }
+
+     IEnumerator DelayedHit()
+    {
+        yield return new WaitForSeconds(0.2f);
     }
     
     public void GetHit()
@@ -40,4 +46,10 @@ public class EquippableItem : MonoBehaviour
                 selectedTree.GetComponent<ChoppableTree>().GetHit();
             }
     }
+   
+   
+
+
+
+
 }

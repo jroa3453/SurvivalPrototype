@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "SurvivalPrototype.slnx"
+    "dotnet.defaultSolution": "SurvivalProtoType.slnx"
 }

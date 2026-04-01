@@ -735,6 +735,8 @@ GameObject:
   - component: {fileID: 5389282084747451878}
   - component: {fileID: -5288314636551666493}
   - component: {fileID: 2333425264760642371}
+  - component: {fileID: 6851368394662463765}
+  - component: {fileID: 9056600189756229298}
   m_Layer: 0
   m_Name: SmallRabbit
   m_TagString: Untagged
@@ -817,8 +819,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.32, z: 0}
+  m_Size: {x: 1.16, y: 1.22, z: 1.16}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!54 &5389282084747451878
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -879,8 +881,45 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 6.8067126, y: 0.9999998, z: 6.699708}
-  m_Center: {x: 0.83979, y: 0, z: 1.1673683}
+  m_Size: {x: 9.64, y: 2.95, z: 7.16}
+  m_Center: {x: 0.83979, y: 1.62, z: 1.1673683}
+--- !u!195 &6851368394662463765
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1588090451174212}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 4
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 6
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &9056600189756229298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1588090451174212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f5d6eb55cf9b6e4884af78ef5711349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalHealth
+  MaxHealth: 4
+  currentHealth: 4
+  meatPreFab: {fileID: 0}
 --- !u!1 &1593323770353162
 GameObject:
   m_ObjectHideFlags: 0
