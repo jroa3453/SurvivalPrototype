@@ -220,4 +220,29 @@ public class EquipSystem : MonoBehaviour
         }
         return counter == 7;
     }
+    public void RemoveFromQuickSlots(string itemName)
+{
+    foreach (GameObject slot in quickSlotsList)
+    {
+        if (slot.transform.childCount > 0)
+        {
+            GameObject item = slot.transform.GetChild(0).gameObject;
+            string cleanName = item.name.Replace("(Clone)", "").Trim();
+            if (cleanName == itemName)
+            {
+                Destroy(item);
+                itemList.Remove(itemName);
+                InventorySystem.Instance.ReCalculateList();
+                ClearEquippedModel();
+                return;
+            }
+        }
+    }
+}
+
+
+
+
+
+
 }
