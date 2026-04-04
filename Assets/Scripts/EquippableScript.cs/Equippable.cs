@@ -19,7 +19,8 @@ public class EquippableItem : MonoBehaviour
         if (Input.GetMouseButtonDown(0) 
             && CraftingSystem.Instance.isOpen == false
             && InventorySystem.Instance.isOpen == false
-            && !Campfire.Instance.playerInRange)
+            && !Campfire.Instance.playerInRange
+            && !SaveLoadUI.Instance.isOpen)
         { 
             if (animator.runtimeAnimatorController != null)
             {

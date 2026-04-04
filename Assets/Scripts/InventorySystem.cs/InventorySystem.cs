@@ -63,21 +63,27 @@ public class InventorySystem : MonoBehaviour
     void Update()
     {
 
-         if (Input.GetKeyDown(KeyCode.Escape))
-    {
-        // Close Inventory
-        if (isOpen)
+     if (Input.GetKeyDown(KeyCode.Escape))
         {
-            CloseInventory();
-        }
-
-        // Close Crafting
-        if (CraftingSystem.Instance.isOpen)
-        {
-            CraftingSystem.Instance.CloseCrafting();
-        }
-    }
- 
+            if (isOpen)
+            {
+                CloseInventory();
+            }
+            else if (CraftingSystem.Instance.isOpen)
+            {
+                CraftingSystem.Instance.CloseCrafting();
+            }
+            else if (SaveLoadUI.Instance != null)
+            {
+                Debug.Log("Opening Save Load UI!");
+                SaveLoadUI.Instance.OpenSaveLoad();
+            }
+            else
+            {
+                Debug.Log("SaveLoadUI Instance is null!");
+            }
+        }    
+        
         if (Input.GetKeyDown(KeyCode.I) && !isOpen)
         {
  
