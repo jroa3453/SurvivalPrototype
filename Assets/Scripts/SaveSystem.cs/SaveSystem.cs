@@ -16,6 +16,15 @@ public class SaveSystem : MonoBehaviour
             Instance = this;
     }
 
+    void Start()
+    {
+        if (GameManager.Instance != null && GameManager.Instance.slotToLoad != -1)
+        {
+            LoadGame(GameManager.Instance.slotToLoad);
+            GameManager.Instance.slotToLoad = -1;
+        }
+    }
+
     public void SaveGame(int slot)
     {
         SaveData data = new SaveData();
