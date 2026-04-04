@@ -15,6 +15,8 @@ public class MouseMovement : MonoBehaviour
 
     void Update()
     {
+        if(SaveLoadUI.Instance.isOpen) return;
+        
         bool menuOpen = InventorySystem.Instance.isOpen 
                      || CraftingSystem.Instance.isOpen;
 

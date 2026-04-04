@@ -1,56 +1,49 @@
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using UnityEngine;
+using System.Collections;
 
 public class Campfire : MonoBehaviour
-
 {
-public bool playerInRange;
+    public static Campfire Instance;
+    public bool playerInRange;
+    private bool isCooking = false;
 
-
-
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-        
+        Instance = this;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0) && playerInRange)
+        if(Input.GetKeyDown(KeyCode.Mouse0) && playerInRange && !isCooking)
         {
-            // check if player is NOT holding axe
             bool holdingAxe = EquipSystem.Instance.selectedItem != null && 
                             EquipSystem.Instance.selectedItem.name.Contains("Axe");
-                 Debug.Log("Left click detected! playerInRange: " + playerInRange);
-                Debug.Log("Trying to cook!");
-                Debug.Log("Has raw meat: " + InventorySystem.Instance.itemList.Contains("RawMeat"));
 
             if(!holdingAxe && InventorySystem.Instance.itemList.Contains("RawMeat"))
             {
-                InventorySystem.Instance.RemoveItem("RawMeat", 1);
-                InventorySystem.Instance.AddToInventory("CookedMeat");
+                StartCoroutine(CookMeat());
             }
         }
     }
 
-
-   private void OnTriggerEnter(Collider other)
+    IEnumerator CookMeat()
     {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = true;
-        }
+        isCooking = true;
+        Debug.Log("Items before remove: " + string.Join(", ", InventorySystem.Instance.itemList));
+        InventorySystem.Instance.RemoveItem("RawMeat", 1);
+        Debug.Log("Items after remove: " + string.Join(", ", InventorySystem.Instance.itemList));
+        yield return new WaitForSeconds(1f);
+        InventorySystem.Instance.AddToInventory("CookedMeat");
+        isCooking = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player")) playerInRange = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
-        }
+        if (other.CompareTag("Player")) playerInRange = false;
     }
 }
