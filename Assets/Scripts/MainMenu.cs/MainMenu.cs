@@ -15,6 +15,20 @@ public class MainMenu : MonoBehaviour
         loadGamePanel.SetActive(true);
     }
 
+    public void LoadSlot(int slot)
+    {
+        string path = Application.persistentDataPath + "/save_slot_" + slot + ".json";
+        
+        if (!System.IO.File.Exists(path))
+        {
+            Debug.Log("No save data in slot " + slot);
+            return;
+        }
+        
+        GameManager.Instance.slotToLoad = slot;
+        SceneManager.LoadScene("MainSceneProtoTypeSurvival.Unity");
+    }
+
     public void CloseLoadGame()
     {
         loadGamePanel.SetActive(false);
