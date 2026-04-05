@@ -16,6 +16,11 @@ public class Campfire : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Mouse0) && playerInRange && !isCooking)
         {
+            {
+                Debug.Log("Click! isCooking: " + isCooking);
+                Debug.Log("itemList contains RawMeat: " + InventorySystem.Instance.itemList.Contains("RawMeat"));
+                Debug.Log("Full list: " + string.Join(", ", InventorySystem.Instance.itemList));
+            }
             bool holdingAxe = EquipSystem.Instance.selectedItem != null && 
                             EquipSystem.Instance.selectedItem.name.Contains("Axe");
 
@@ -29,9 +34,14 @@ public class Campfire : MonoBehaviour
     IEnumerator CookMeat()
     {
         isCooking = true;
-        Debug.Log("Items before remove: " + string.Join(", ", InventorySystem.Instance.itemList));
+        
+        if (!InventorySystem.Instance.itemList.Contains("RawMeat"))
+        {
+            isCooking = false;
+            yield break;
+        }
+        
         InventorySystem.Instance.RemoveItem("RawMeat", 1);
-        Debug.Log("Items after remove: " + string.Join(", ", InventorySystem.Instance.itemList));
         yield return new WaitForSeconds(1f);
         InventorySystem.Instance.AddToInventory("CookedMeat");
         isCooking = false;

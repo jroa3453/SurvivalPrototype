@@ -15,7 +15,11 @@ public class MouseMovement : MonoBehaviour
 
     void Update()
     {
-        if(SaveLoadUI.Instance.isOpen) return;
+        if (PauseMenu.Instance != null && PauseMenu.Instance.isPaused) return;
+        if (SaveLoadUI.Instance != null && SaveLoadUI.Instance.isOpen) return;
+        // rest of your mouse movement code
+
+        
         
         bool menuOpen = InventorySystem.Instance.isOpen 
                      || CraftingSystem.Instance.isOpen;
