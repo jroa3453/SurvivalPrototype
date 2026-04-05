@@ -9,6 +9,7 @@ public class EquippableItem : MonoBehaviour
     public Animator animator;
     public float axeDamage = 10f;
     public float hammerDamage = 5.5f;
+    public AudioSource chopSound;
     
     void Start()
     {
@@ -43,7 +44,12 @@ public class EquippableItem : MonoBehaviour
 
     IEnumerator DelayedHit()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
+        if(gameObject.name.Contains("Axe"))
+        {
+            AudioSource sound = GetComponent<AudioSource>();
+            if(sound != null) sound.Play();
+        }
         GetHit();
     }
     

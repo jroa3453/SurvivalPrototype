@@ -16,7 +16,7 @@ public class ChoppableTree : MonoBehaviour
     public Animator animator;
 
     //Audio
-    public AudioSource chopSound;
+    
     public AudioSource TreeFallingSound;
     private void OnTriggerEnter(Collider other)
     {
@@ -56,7 +56,6 @@ public class ChoppableTree : MonoBehaviour
     public void GetHit()
     {
         animator.SetTrigger("shake");
-        chopSound.Play();
 
         treeHealth -= 10f;
         treeHealth = Mathf.Clamp(treeHealth, 0f, treeMaxHealth);
