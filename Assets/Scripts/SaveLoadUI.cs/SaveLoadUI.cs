@@ -61,7 +61,7 @@ public class SaveLoadUI : MonoBehaviour
             else
             {
                 slotTexts[i].text = "Slot " + (i + 1) + "\n--- Empty ---";
-                deleteButtons[i].gameObject.SetActive(false);
+                deleteButtons[i].gameObject.SetActive(true);
             }
         }
     }

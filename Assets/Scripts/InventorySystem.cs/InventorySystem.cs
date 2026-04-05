@@ -65,7 +65,11 @@ public class InventorySystem : MonoBehaviour
 
      if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isOpen)
+            if (SaveLoadUI.Instance != null && SaveLoadUI.Instance.isOpen)
+            {
+                SaveLoadUI.Instance.CloseSaveLoad();
+            }
+            else if (isOpen)
             {
                 CloseInventory();
             }
@@ -73,16 +77,15 @@ public class InventorySystem : MonoBehaviour
             {
                 CraftingSystem.Instance.CloseCrafting();
             }
-            else if (SaveLoadUI.Instance != null)
+            else if (PauseMenu.Instance != null && PauseMenu.Instance.isPaused)
             {
-                Debug.Log("Opening Save Load UI!");
-                SaveLoadUI.Instance.OpenSaveLoad();
+                PauseMenu.Instance.ClosePauseMenu();
             }
-            else
+            else if (PauseMenu.Instance != null)
             {
-                Debug.Log("SaveLoadUI Instance is null!");
+                PauseMenu.Instance.OpenPauseMenu();
             }
-        }    
+        }
         
         if (Input.GetKeyDown(KeyCode.I) && !isOpen)
         {
@@ -206,15 +209,22 @@ void TriggerPickupAlert(string itemName, Sprite itemSprite)
 
         for (var i = slotList.Count - 1; i >= 0; i--)
         {
+            if (counter == 0) break;
+            
             if (slotList[i].transform.childCount > 0)
             {
-                if (slotList[i].transform.GetChild(0).name == nameToRemove + "(Clone)" && counter != 0)
+                string childName = slotList[i].transform.GetChild(0).name;
+                string cleanName = childName.Replace("(Clone)", "").Trim();
+                
+                if (cleanName == nameToRemove)
                 {
-                    Destroy(slotList[i].transform.GetChild(0).gameObject);
+                    DestroyImmediate(slotList[i].transform.GetChild(0).gameObject);
                     counter -= 1;
                 }
             }
         }
+        
+        ReCalculateList();
     }
     public void ReCalculateList()
     {
