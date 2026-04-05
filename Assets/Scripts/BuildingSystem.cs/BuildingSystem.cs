@@ -72,18 +72,48 @@ public class BuildingSystem : MonoBehaviour
 
     void UpdateGhostPosition()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, buildDistance, buildLayerMask))
         {
+            // Clamp the position so it never goes further than buildDistance
+            Vector3 placementPos = ray.origin + ray.direction * Mathf.Min(hit.distance, buildDistance);
+            
             ghostObject.SetActive(true);
-            ghostObject.transform.position = hit.point;
-            canPlace = true;
-            SetGhostMaterial(validMaterial);
+            ghostObject.transform.position = placementPos + new Vector3(0, ghostObject.transform.localScale.y / 2, 0);
+
+            Collider[] overlaps = Physics.OverlapBox(
+                ghostObject.transform.position,
+                ghostObject.transform.localScale / 2
+            );
+
+            bool overlapping = false;
+            foreach (Collider col in overlaps)
+            {
+                if (col.gameObject != ghostObject)
+                {
+                    overlapping = true;
+                    break;
+                }
+            }
+
+            if (!overlapping)
+            {
+                canPlace = true;
+                SetGhostMaterial(validMaterial);
+            }
+            else
+            {
+                canPlace = false;
+                SetGhostMaterial(invalidMaterial);
+            }
         }
         else
         {
+            // Even if no hit, show ghost at max build distance
+            ghostObject.SetActive(true);
+            ghostObject.transform.position = ray.origin + ray.direction * buildDistance;
             canPlace = false;
             SetGhostMaterial(invalidMaterial);
         }
@@ -100,6 +130,9 @@ public class BuildingSystem : MonoBehaviour
     void PlacePiece()
     {
         BuildingPiece piece = buildingPieces[selectedPieceIndex].GetComponent<BuildingPiece>();
+        Debug.Log("Trying to place: " + piece.pieceName);
+        Debug.Log("Can place: " + canPlace);
+        Debug.Log("Has materials: " + HasMaterials(piece));
 
         if (!HasMaterials(piece))
         {
