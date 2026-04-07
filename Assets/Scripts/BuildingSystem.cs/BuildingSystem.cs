@@ -17,6 +17,7 @@ public class BuildingSystem : MonoBehaviour
     public float buildDistance = 10f;
 
     public LayerMask buildLayerMask;
+    public Camera buildCamera;
 
     void Awake()
     {
@@ -29,7 +30,7 @@ public class BuildingSystem : MonoBehaviour
     void Update()
     {
         if (!inBuildMode) return;
-
+          Debug.Log("In build mode! Ghost: " + ghostObject);
         UpdateGhostPosition();
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -38,14 +39,19 @@ public class BuildingSystem : MonoBehaviour
             CyclePiece(1);
 
         if (Input.GetMouseButtonDown(0) && canPlace)
+        {
+            Debug.Log("Placing piece!");
             PlacePiece();
-
-        if (Input.GetMouseButtonDown(1))
-            ExitBuildMode();
+        }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Left click but canPlace is: " + canPlace);
+        }
     }
 
     public void EnterBuildMode()
     {
+         Debug.Log("Entering build mode! Pieces count: " + buildingPieces.Length);
         inBuildMode = true;
         SpawnGhost();
     }
@@ -59,22 +65,27 @@ public class BuildingSystem : MonoBehaviour
 
     void SpawnGhost()
     {
+       
         if (ghostObject != null)
             Destroy(ghostObject);
 
         ghostObject = Instantiate(buildingPieces[selectedPieceIndex]);
+         
         
         Collider col = ghostObject.GetComponent<Collider>();
-        if (col != null) col.enabled = false;
+        if (col != null) col.isTrigger = true;
 
         SetGhostMaterial(invalidMaterial);
     }
 
     void UpdateGhostPosition()
     {
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Ray ray = buildCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
-
+        
+    bool didHit = Physics.Raycast(ray, out hit, buildDistance, buildLayerMask);
+    Debug.Log("Placing piece!"); Debug.Log("Placing piece!"); Debug.Log("Placing piece!"); Debug.Log("Placing piece!"); Debug.Log("Placing piece!"); Debug.Log("Placing piece!");
+    if (didHit) Debug.Log("Hit: " + hit.collider.name);
         if (Physics.Raycast(ray, out hit, buildDistance, buildLayerMask))
         {
             // Clamp the position so it never goes further than buildDistance
