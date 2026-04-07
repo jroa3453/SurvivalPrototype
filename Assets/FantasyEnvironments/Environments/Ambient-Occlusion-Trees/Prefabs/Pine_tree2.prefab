@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33356936782184882}
   - component: {fileID: 23052789588344098}
   - component: {fileID: 136908101548686026}
+  - component: {fileID: 3745377919680148480}
   m_Layer: 0
   m_Name: Pine_tree2
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1589722417147216}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -67,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8dbb16fd86f5b7248b93f86a4f121388, type: 2}
+  - {fileID: 2100000, guid: db04b9833d386ed46b9702d3237b335f, type: 2}
   - {fileID: 2100000, guid: b09e7c2aeb26bb84cbfa0586ec3c5bbb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -115,3 +116,17 @@ CapsuleCollider:
   m_Height: 19.388876
   m_Direction: 1
   m_Center: {x: -0.01, y: 7.99, z: 0.01}
+--- !u!114 &3745377919680148480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589722417147216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 703f31359ba4b9d41ad15ea41acde11f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
+  playerInRange: 0
+  ItemName: PineTree
