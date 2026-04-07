@@ -26,7 +26,7 @@ public class CraftingSystem : MonoBehaviour
     [Header("Craft Buttons")]
     [SerializeField] private Button craftAxeBTN;
     [SerializeField] private Button craftPlankBTN;
-    [SerializeField] private Button craftBlueprintBTN;
+    //[SerializeField] private Button craftBlueprintBTN;
 
     [Header("Requirement Text")]
     [SerializeField] private Text AxeReq1;
@@ -40,7 +40,7 @@ public class CraftingSystem : MonoBehaviour
     [Header("Blueprints")]
     public BluePrint AxeBLP = new BluePrint("Axe", 1, 2, "Stone", 3, "Stick", 3);
     public BluePrint PlankBLP = new BluePrint("Plank", 2, 1, "Log", 1, "", 0);
-    public BluePrint BlueprintBLP = new BluePrint("Blueprint", 1, 0, "", 0, "", 0);
+    //public BluePrint BlueprintBLP = new BluePrint("Blueprint", 1, 0, "", 0, "", 0);
 
     private void Awake()
     {
@@ -69,7 +69,7 @@ public class CraftingSystem : MonoBehaviour
 
         craftAxeBTN.onClick.AddListener(() => CraftAnyItem(AxeBLP));
         craftPlankBTN.onClick.AddListener(() => CraftAnyItem(PlankBLP));
-        craftBlueprintBTN.onClick.AddListener(() => CraftAnyItem(BlueprintBLP));
+        //craftBlueprintBTN.onClick.AddListener(() => CraftAnyItem(BlueprintBLP));
     }
 
     private void Update()

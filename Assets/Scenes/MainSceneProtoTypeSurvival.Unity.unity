@@ -10033,8 +10033,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.5, y: 3.5, z: 3.5}
-  m_Center: {x: 0, y: 1.02, z: 0}
+  m_Size: {x: 1.2762623, y: 3.5, z: 2.0414581}
+  m_Center: {x: 0.28405666, y: 1.02, z: -0.014877319}
 --- !u!65 &769554752
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10054,8 +10054,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.3, z: 0}
+  m_Size: {x: 0.79615784, y: 0.5737168, z: 1}
+  m_Center: {x: 0.10192108, y: 0.08685842, z: 0}
 --- !u!114 &769554753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16315,9 +16315,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingSystem
   inBuildMode: 0
   buildingPieces:
-  - {fileID: 3743593745579077220, guid: 6740aa567739d6e4cbf66a0c8d92f7b6, type: 3}
+  - {fileID: 8225434164145770125, guid: 27f402aedc002f04db6b00ceb9724999, type: 3}
   - {fileID: 6257539669908132726, guid: fcb8fe149f64df845bb44c68b55f3fa9, type: 3}
-  - {fileID: 8036747788508534354, guid: 4d3e372d07e2bbf428f667e7ab71f5b4, type: 3}
+  - {fileID: 6734008305003225253, guid: 5e6c5804279922f4e800f25abec04e1d, type: 3}
   - {fileID: 2531894254504612431, guid: 289d369ea95fdd245b16287e9a7f61b9, type: 3}
   selectedPieceIndex: 0
   validMaterial: {fileID: 2100000, guid: ea567335236add747937476c84b861ce, type: 2}
@@ -16325,7 +16325,8 @@ MonoBehaviour:
   buildDistance: 10
   buildLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 64
+  buildCamera: {fileID: 415000342}
 --- !u!1 &1157523949
 GameObject:
   m_ObjectHideFlags: 0
@@ -20002,7 +20003,6 @@ MonoBehaviour:
   refineBTN: {fileID: 1745192145}
   craftAxeBTN: {fileID: 307747594}
   craftPlankBTN: {fileID: 148038666}
-  craftBlueprintBTN: {fileID: 0}
   AxeReq1: {fileID: 404230296}
   AxeReq2: {fileID: 365042317}
   PlankReq1: {fileID: 339042314}
