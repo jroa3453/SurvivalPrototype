@@ -17,7 +17,6 @@ public class BuildingSystem : MonoBehaviour
     public float buildDistance = 10f;
 
     public LayerMask buildLayerMask;
-    public Camera buildCamera;
 
     void Awake()
     {
@@ -80,7 +79,7 @@ public class BuildingSystem : MonoBehaviour
 
     void UpdateGhostPosition()
     {
-        Ray ray = buildCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
         
     bool didHit = Physics.Raycast(ray, out hit, buildDistance, buildLayerMask);

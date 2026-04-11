@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,13 +13,13 @@ public class EquipSystem : MonoBehaviour
     [Header("Tool")]
     public GameObject toolHolder;
 
-    // These values control where the axe sits in your hand
-    // Tweak them in the Inspector until it looks right
     [Header("Equipped Model Offset")]
     public Vector3 modelPosition = new Vector3(0.3f, -0.3f, 0.6f);
     public Vector3 modelRotation = new Vector3(0f, 0f, 0f);
     public Vector3 modelScale    = new Vector3(1f, 1f, 1f);
-
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip equipSound;
     public List<GameObject> quickSlotsList = new List<GameObject>();
     public List<string> itemList = new List<string>();
 
@@ -41,24 +40,40 @@ public class EquipSystem : MonoBehaviour
     }
 
     void Update()
-{
-    if (Input.GetKeyDown(KeyCode.Alpha1)) SelectQuickSlot(1);
-    else if (Input.GetKeyDown(KeyCode.Alpha2)) SelectQuickSlot(2);
-    else if (Input.GetKeyDown(KeyCode.Alpha3)) SelectQuickSlot(3);
-    else if (Input.GetKeyDown(KeyCode.Alpha4)) SelectQuickSlot(4);
-    else if (Input.GetKeyDown(KeyCode.Alpha5)) SelectQuickSlot(5);
-    else if (Input.GetKeyDown(KeyCode.Alpha6)) SelectQuickSlot(6);
-    else if (Input.GetKeyDown(KeyCode.Alpha7)) SelectQuickSlot(7);
-
-    // Live update equipped model transform while in Play mode
-    if (toolHolder != null && toolHolder.transform.childCount > 0)
     {
-        Transform equippedModel = toolHolder.transform.GetChild(0);
-        equippedModel.localPosition = modelPosition;
-        equippedModel.localRotation = Quaternion.Euler(modelRotation);
-        equippedModel.localScale    = modelScale;
+        if      (Input.GetKeyDown(KeyCode.Alpha1)) SelectQuickSlot(1);
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) SelectQuickSlot(2);
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) SelectQuickSlot(3);
+        else if (Input.GetKeyDown(KeyCode.Alpha4)) SelectQuickSlot(4);
+        else if (Input.GetKeyDown(KeyCode.Alpha5)) SelectQuickSlot(5);
+        else if (Input.GetKeyDown(KeyCode.Alpha6)) SelectQuickSlot(6);
+        else if (Input.GetKeyDown(KeyCode.Alpha7)) SelectQuickSlot(7);
+
+        // Live update equipped model transform while in Play mode
+        if (toolHolder != null && toolHolder.transform.childCount > 0)
+        {
+            Transform equippedModel = toolHolder.transform.GetChild(0);
+            equippedModel.localPosition = modelPosition;
+            equippedModel.localRotation = Quaternion.Euler(modelRotation);
+            equippedModel.localScale    = modelScale;
+        }
     }
-}
+
+    // ✅ Fixed: was item.Damage (capital D), now matches the field name in EquippableItem
+    public int GetWeaponDamage()
+    {
+        if (selectedItem != null)
+        {
+            EquippableItem item = selectedItem.GetComponent<EquippableItem>();
+            if (item != null) return item.damage;
+        }
+        return 0;
+    }
+
+    public bool IsHoldingWeapon()
+    {
+        return selectedItem != null && selectedItem.GetComponent<EquippableItem>() != null;
+    }
 
     void SelectQuickSlot(int number)
     {
@@ -106,15 +121,12 @@ public class EquipSystem : MonoBehaviour
 
     void SetEquippedModel(GameObject item)
     {
-        if (item == null)      { Debug.LogError("SetEquippedModel: item is null");       return; }
-        if (toolHolder == null){ Debug.LogError("SetEquippedModel: toolHolder is null"); return; }
+        if (item == null)       { Debug.LogError("SetEquippedModel: item is null");       return; }
+        if (toolHolder == null) { Debug.LogError("SetEquippedModel: toolHolder is null"); return; }
 
-        // Clear existing model
         ClearEquippedModel();
 
         string itemName = item.name.Replace("(Clone)", "").Trim();
-        Debug.Log("Loading model: " + itemName + "_Model");
-
         GameObject loadedModel = Resources.Load<GameObject>(itemName + "_Model");
 
         if (loadedModel == null)
@@ -124,13 +136,11 @@ public class EquipSystem : MonoBehaviour
         }
 
         GameObject itemModel = Instantiate(loadedModel, toolHolder.transform);
-
-        // Use the offset values from Inspector so you can tweak without recompiling
         itemModel.transform.localPosition = modelPosition;
         itemModel.transform.localRotation = Quaternion.Euler(modelRotation);
         itemModel.transform.localScale    = modelScale;
 
-        Debug.Log("Model equipped: " + itemModel.name);
+       audioSource.PlayOneShot(equipSound);
     }
 
     void ClearEquippedModel()
@@ -141,10 +151,8 @@ public class EquipSystem : MonoBehaviour
 
     void UpdateNumberHighlight(int selectedNum)
     {
-        // Grey out all numbers
         ResetAllNumberHighlights();
 
-        // White out selected number
         Transform numberTransform = numbersHolder.transform.Find("number" + selectedNum);
         if (numberTransform == null) { Debug.LogError("Could not find: number" + selectedNum); return; }
 
@@ -178,7 +186,7 @@ public class EquipSystem : MonoBehaviour
         return quickSlotsList[slotNumber - 1].transform.childCount > 0;
     }
 
-    private void PopulateSlotList()
+    void PopulateSlotList()
     {
         foreach (Transform child in quickSlotsPanel.transform)
         {
@@ -193,14 +201,11 @@ public class EquipSystem : MonoBehaviour
         if (availableSlot == null) { Debug.Log("No empty quick slots!"); return; }
 
         itemToEquip.transform.SetParent(availableSlot.transform, false);
-
-        string cleanName = itemToEquip.name.Replace("(Clone)", "").Trim();
-        itemList.Add(cleanName);
-
+        itemList.Add(itemToEquip.name.Replace("(Clone)", "").Trim());
         InventorySystem.Instance.ReCalculateList();
     }
 
-    private GameObject FindNextEmptySlot()
+    GameObject FindNextEmptySlot()
     {
         foreach (GameObject slot in quickSlotsList)
         {
@@ -212,22 +217,21 @@ public class EquipSystem : MonoBehaviour
 
     public bool CheckIfFull()
     {
-        int counter = 0;
+        int count = 0;
+        foreach (GameObject slot in quickSlotsList)
+            if (slot.transform.childCount > 0) count++;
+        return count == 7;
+    }
+
+    public void RemoveFromQuickSlots(string itemName)
+    {
         foreach (GameObject slot in quickSlotsList)
         {
-            if (slot.transform.childCount > 0)
-                counter++;
-        }
-        return counter == 7;
-    }
-    public void RemoveFromQuickSlots(string itemName)
-{
-    foreach (GameObject slot in quickSlotsList)
-    {
-        if (slot.transform.childCount > 0)
-        {
+            if (slot.transform.childCount == 0) continue;
+
             GameObject item = slot.transform.GetChild(0).gameObject;
             string cleanName = item.name.Replace("(Clone)", "").Trim();
+
             if (cleanName == itemName)
             {
                 Destroy(item);
@@ -238,11 +242,4 @@ public class EquipSystem : MonoBehaviour
             }
         }
     }
-}
-
-
-
-
-
-
 }

@@ -1,7 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
+using Microsoft.VisualBasic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +18,7 @@ public class SelectionManager : MonoBehaviour
 
     public GameObject SelectedTree;
     public GameObject chopHolder;
+    private Text interactable;
 
     private void Awake()
     {
@@ -44,13 +44,7 @@ public class SelectionManager : MonoBehaviour
         {
             var selectionTransform = hit.transform;
 
-            // DEBUG — remove after fixing
-            Debug.Log("Ray hit: " + selectionTransform.name);
-
             ChoppableTree choppableTree = selectionTransform.GetComponentInParent<ChoppableTree>();
-
-            // DEBUG — remove after fixing
-            Debug.Log("ChoppableTree found: " + (choppableTree != null) + " | playerInRange: " + (choppableTree != null ? choppableTree.playerInRange.ToString() : "N/A"));
 
             if (choppableTree != null && choppableTree.playerInRange)
             {
@@ -61,24 +55,17 @@ public class SelectionManager : MonoBehaviour
                     choppableTree.canBeChopped = true;
                 }
 
-                AnimalHealth animal = selectionTransform.GetComponentInParent<AnimalHealth>();
-                if(animal != null)
-                {
-                    selectedObject = selectionTransform.gameObject;
-                }
-
-                // Always show bar and update health while looking at tree
                 chopHolder.SetActive(true);
                 GlobalState.Instance.resourceHealth    = choppableTree.treeHealth;
                 GlobalState.Instance.resourceMaxHealth = choppableTree.treeMaxHealth;
 
-                // Hide interact UI
                 interaction_Info_UI.SetActive(false);
                 centerDotImage.gameObject.SetActive(true);
                 handIcon.gameObject.SetActive(false);
             }
             else
             {
+                // Clear tree selection if we look away
                 if (SelectedTree != null)
                 {
                     ChoppableTree old = SelectedTree.GetComponentInParent<ChoppableTree>();
@@ -87,36 +74,94 @@ public class SelectionManager : MonoBehaviour
                     chopHolder.SetActive(false);
                 }
 
-                var interactable = selectionTransform.GetComponent<InteractableObject>();
-                if (interactable != null && interactable.playerInRange)
+                // ✅ Animal check — now correctly inside Update with selectionTransform in scope
+                Animal animal = selectionTransform.GetComponentInParent<Animal>();
+                if (animal != null && animal.playerInRange)
                 {
-                    onTarget = true;
-                    selectedObject = interactable.gameObject;
-                    interaction_text.text = interactable.GetItemName();
-                    interaction_Info_UI.SetActive(true);
-
-                    if (interactable.CompareTag("Pickable"))
+                    if (animal.isDead)
                     {
+                        interaction_text.text = "Loot";
+                        interaction_Info_UI.SetActive(true);
+
                         centerDotImage.gameObject.SetActive(false);
                         handIcon.gameObject.SetActive(true);
+
+                        if (Input.GetKeyDown(KeyCode.E))
+                        {
+                            Lootable lootable = animal.GetComponent<Lootable>();
+                            Loot(lootable);
+                        }
                     }
                     else
                     {
-                        centerDotImage.gameObject.SetActive(true);
-                        handIcon.gameObject.SetActive(false);
+                    selectedObject = selectionTransform.gameObject;
+                    interaction_text.text = animal.animalName;
+                    interaction_Info_UI.SetActive(true);
+                    centerDotImage.gameObject.SetActive(true);
+                    handIcon.gameObject.SetActive(false);
+
+                    if (Input.GetMouseButtonDown(0) && EquipSystem.Instance.IsHoldingWeapon())
+                        {
+                            EquippableItem equippedItem = EquipSystem.Instance.selectedItem.GetComponent<EquippableItem>();
+                            if (equippedItem != null && equippedItem.canHitAnimals)
+                            StartCoroutine(DealDamageTo(animal, 0.3f, EquipSystem.Instance.GetWeaponDamage()));
+                        }
+                        return;
                     }
+                }
+
+                if(!interactable && !animal)
+                {
+                    onTarget = false;
+
+                    centerDotImage.gameObject.SetActive(true);
+                    handIcon.gameObject.SetActive(false);
+                }
+
+                if (!interactable && !animal && !choppableTree)
+                {
+                    interaction_text.text = "";
+                    interaction_Info_UI.SetActive(false);
                 }
                 else
                 {
-                    onTarget = false;
-                    interaction_Info_UI.SetActive(false);
-                    centerDotImage.gameObject.SetActive(true);
-                    handIcon.gameObject.SetActive(false);
+                    // Interactable object check
+                    var interactable = selectionTransform.GetComponent<InteractableObject>();
+                    if (interactable != null && interactable.playerInRange)
+                    {
+                        onTarget = true;
+                        selectedObject = interactable.gameObject;
+                        interaction_text.text = "";
+                        interaction_Info_UI.SetActive(true);
+
+                        if (interactable.CompareTag("Pickable"))
+                        {
+                            centerDotImage.gameObject.SetActive(false);
+                            handIcon.gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            centerDotImage.gameObject.SetActive(true);
+                            handIcon.gameObject.SetActive(false);
+                        }
+                    }
+                    else
+                    {
+                        if (animal == null)
+                        {
+                            onTarget = false;
+                            selectedObject = null;
+                            interaction_Info_UI.SetActive(false);
+                            centerDotImage.gameObject.SetActive(true);
+                            handIcon.gameObject.SetActive(false);
+                        }
+                    }
                 }
             }
         }
         else
         {
+            // Ray hit nothing
             if (SelectedTree != null)
             {
                 ChoppableTree old = SelectedTree.GetComponentInParent<ChoppableTree>();
@@ -126,10 +171,54 @@ public class SelectionManager : MonoBehaviour
             }
 
             onTarget = false;
+            selectedObject = null;
             interaction_Info_UI.SetActive(false);
             centerDotImage.gameObject.SetActive(true);
             handIcon.gameObject.SetActive(false);
         }
+    }
+
+
+    private void Loot(Lootable lootable)
+    {
+        if (lootable.wasLootCalculated == false)
+        {
+            List<LootRecieved> recievedLoot = new List<LootRecieved>();
+
+            foreach (LootPossibility loot in lootable.possibleLoot)
+            {
+                var  lootAmount = UnityEngine.Random.Range(loot.amountMin, loot.amountMax + 1);
+                if (lootAmount != 0)
+                {
+                    LootRecieved lT = new LootRecieved();
+                    lT.item = loot.item;
+                    lT.amount = lootAmount;
+                    recievedLoot.Add(lT);
+                }
+            }
+            lootable.finalLoot = recievedLoot;
+            lootable.wasLootCalculated = true;
+        }
+
+        Vector3 lootSpawnPosition = lootable.gameObject.transform.position;
+
+        foreach (LootRecieved lootRecieved in lootable.finalLoot)
+        {
+            for (int i = 0; i < lootRecieved.amount; i++)
+            {
+                GameObject lootSpawn = Instantiate(Resources.Load<GameObject>(lootRecieved.item.name+"_Model"),
+                new Vector3(lootSpawnPosition.x, lootSpawnPosition.y+0.2f, lootSpawnPosition.z),
+                Quaternion.Euler(0,0,0));
+            }
+        }
+
+    }
+
+    // ✅ Placeholder — replace with your actual DealDamageTo signature
+    IEnumerator DealDamageTo(Animal animal, float delay, int damage)
+    {
+        yield return new WaitForSeconds(damage);
+        animal.TakeDamage(damage);
     }
 
     void ClearTreeSelection()

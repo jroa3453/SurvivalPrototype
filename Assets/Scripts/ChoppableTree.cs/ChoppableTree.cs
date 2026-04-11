@@ -14,8 +14,12 @@ public class ChoppableTree : MonoBehaviour
     private TreeisChopped treeisChoppedScript;
 
     public Animator animator;
+    public AudioSource chopSound;
 
     //Audio
+
+
+
     
     public AudioSource TreeFallingSound;
     private void OnTriggerEnter(Collider other)
@@ -64,50 +68,45 @@ public class ChoppableTree : MonoBehaviour
         GlobalState.Instance.resourceHealth = treeHealth;
         GlobalState.Instance.resourceMaxHealth = treeMaxHealth;
 
-        Debug.Log("Tree health now: " + treeHealth);
-        Debug.Log("GetHit called!");
-        Debug.Log("resourceHealth: " + GlobalState.Instance.resourceHealth);
-        Debug.Log("resourceMaxHealth: " + GlobalState.Instance.resourceMaxHealth);
+        // ✅ Just play the chop sound directly
+        if (chopSound != null)
+            chopSound.Play();
+        else
+            Debug.LogWarning("chopSound is not assigned on " + gameObject.name);
 
         if (treeHealth <= 0f)
         {
             Debug.Log("Tree has been chopped down");
             TreeFallingSound.Play();
-            Destroy(gameObject, TreeFallingSound.clip.length);
             TreeisDead();
-        
 
             if (treeisChoppedScript != null)
-            {
                 treeisChoppedScript.ChopTreeDown();
-            }
             else
-            {
                 Debug.Log("TreeisChopped script is NULL");
-            }
         }
     }
 
     void TreeisDead()
-{
-    Vector3 treePosition = transform.position;
+    {
+        Vector3 treePosition = transform.position;
 
-    canBeChopped = false;
+        canBeChopped = false;
 
-    SelectionManager.Instance.SelectedTree = null;
-    SelectionManager.Instance.chopHolder.SetActive(false);
+        SelectionManager.Instance.SelectedTree = null;
+        SelectionManager.Instance.chopHolder.SetActive(false);
 
-    GlobalState.Instance.resourceHealth    = 0f;
-    GlobalState.Instance.resourceMaxHealth = 0f;
+        GlobalState.Instance.resourceHealth    = 0f;
+        GlobalState.Instance.resourceMaxHealth = 0f;
 
-    // Spawn the chopped tree stump
-    Instantiate(Resources.Load<GameObject>("ChoppedTree"), 
-        new Vector3(treePosition.x, treePosition.y, treePosition.z), 
-        Quaternion.identity);
+        // Spawn the chopped tree stump
+        Instantiate(Resources.Load<GameObject>("ChoppedTree"), 
+            new Vector3(treePosition.x, treePosition.y, treePosition.z), 
+            Quaternion.identity);
 
-    // Destroy THIS object (Tree_Parent) — not parents above it
-    Destroy(gameObject);
-}
+        // Destroy THIS object (Tree_Parent) — not parents above it
+        Destroy(gameObject);
+    }
 
 
 

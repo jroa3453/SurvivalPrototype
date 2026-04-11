@@ -736,7 +736,7 @@ GameObject:
   - component: {fileID: -5288314636551666493}
   - component: {fileID: 2333425264760642371}
   - component: {fileID: 6851368394662463765}
-  - component: {fileID: 9056600189756229298}
+  - component: {fileID: 6602834641098427210}
   m_Layer: 0
   m_Name: SmallRabbit
   m_TagString: Untagged
@@ -905,7 +905,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &9056600189756229298
+--- !u!114 &6602834641098427210
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -914,12 +914,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1588090451174212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f5d6eb55cf9b6e4884af78ef5711349, type: 3}
+  m_Script: {fileID: 11500000, guid: 6cbe5fa1420d5da48adfc4b0dd2a06b6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AnimalHealth
-  MaxHealth: 4
-  currentHealth: 4
-  meatPreFab: {fileID: 7149382145186017112, guid: 9a6611ef159ccde45ace2e77cd396a5d, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::Animal
+  animalName: Rabbit
+  MaxHealth: 40
+  currentHealth: 0
+  meatPreFab: {fileID: 0}
+  playerInRange: 0
 --- !u!1 &1593323770353162
 GameObject:
   m_ObjectHideFlags: 0
