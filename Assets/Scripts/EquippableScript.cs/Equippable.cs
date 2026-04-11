@@ -2,15 +2,22 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using System.Collections;
+using System.Reflection.Emit;
 
 [RequireComponent(typeof(Animator))]
 public class EquippableItem : MonoBehaviour
 {
     public Animator animator;
-    public float axeDamage = 10f;
-    public float hammerDamage = 5.5f;
-    public AudioSource chopSound;
     
+    [Header("Combat")]
+    public float attackCooldown = 1f; // time between attacks
+    [Header("Damage")]
+    [Header("Animation")]
+    public int damage;
+    public bool canHitAnimals;
+    private bool canAttack = true;
+    public string hitAnimationName; // one value for all weapons, set per prefab in Inspector
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -18,65 +25,53 @@ public class EquippableItem : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) 
+        if (Input.GetMouseButtonDown(0))
+        {
+          
+        }
+        if (Input.GetMouseButtonDown(0)
             && CraftingSystem.Instance.isOpen == false
             && InventorySystem.Instance.isOpen == false
             && !Campfire.Instance.playerInRange
             && !SaveLoadUI.Instance.isOpen)
-        { 
-            if (animator.runtimeAnimatorController != null)
-            {
-                string itemName = EquipSystem.Instance.selectedItem != null ? 
-                    EquipSystem.Instance.selectedItem.name.Replace("(Clone)", "").Trim() : "";
-                    Debug.Log("Item name: " + itemName);
-                    Debug.Log("GameObject name: " + gameObject.name);
-                    Debug.Log("Parent name: " + transform.parent.name);
-
-                if (gameObject.name.Contains("Hammer"))
-                    animator.SetTrigger("Hit");
-                else
-                    animator.Play("Axe_Hit");
-
-                StartCoroutine(DelayedHit());
-            }
-        }  
-    }
-
-    IEnumerator DelayedHit()
-    {
-        yield return new WaitForSeconds(0.5f);
-        if(gameObject.name.Contains("Axe"))
         {
-            AudioSource sound = GetComponent<AudioSource>();
-            if(sound != null) sound.Play();
+             if(animator.runtimeAnimatorController != null)
+            {
+                animator.Play(hitAnimationName);
+                StartCoroutine(AttackCooldown());
+            } 
         }
-        GetHit();
     }
-    
+
+
+    IEnumerator AttackCooldown()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
+    }
+
+    // Called by animation event
     public void GetHit()
     {
-        // Only chop trees if holding axe
-        if (gameObject.name.Contains("Axe"))
+        // Tree chopping — axe only
+        if (gameObject.name.ToLower().Contains("axe"))
         {
             GameObject selectedTree = SelectionManager.Instance.SelectedTree;
-            if(selectedTree != null)
+            if (selectedTree != null)
             {
-                selectedTree.GetComponent<ChoppableTree>().GetHit();
+                ChoppableTree tree = selectedTree.GetComponentInParent<ChoppableTree>();
+                if (tree != null) tree.GetHit();
             }
         }
 
-        // Only damage animals if holding axe
-        if (gameObject.name.Contains("Axe"))
+        // Animal damage — any weapon
+        GameObject selectedAnimal = SelectionManager.Instance.selectedObject;
+        if (selectedAnimal != null)
         {
-            GameObject selectedAnimal = SelectionManager.Instance.selectedObject;
-            if(selectedAnimal != null)
-            {
-                AnimalHealth animal = selectedAnimal.GetComponent<AnimalHealth>();
-                if(animal != null)
-                {
-                    animal.TakeDamage(axeDamage);
-                }
-            }
+            Animal animal = selectedAnimal.GetComponent<Animal>();
+            if (animal != null)
+                animal.TakeDamage(damage);
         }
     }
 }

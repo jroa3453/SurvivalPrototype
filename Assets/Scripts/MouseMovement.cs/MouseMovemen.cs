@@ -11,12 +11,19 @@ public class MouseMovement : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        // ✅ Sync xRotation with whatever the camera's actual starting rotation is
+        xRotation = cameraHolder.localEulerAngles.x;
+
+        // Convert from Unity's 0-360 range to -180 to 180
+        if (xRotation > 180f) xRotation -= 360f;
     }
 
     void Update()
     {
         if (PauseMenu.Instance != null && PauseMenu.Instance.isPaused) return;
         if (SaveLoadUI.Instance != null && SaveLoadUI.Instance.isOpen) return;
+         
         // rest of your mouse movement code
 
         
