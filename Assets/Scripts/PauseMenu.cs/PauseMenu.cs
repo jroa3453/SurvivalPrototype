@@ -18,6 +18,7 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenPauseMenu()
     {
+        Time.timeScale = 0f;
         pauseMenuPanel.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -26,6 +27,7 @@ public class PauseMenu : MonoBehaviour
 
     public void ClosePauseMenu()
     {
+        Time.timeScale = 1f;
         pauseMenuPanel.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -42,6 +44,9 @@ public class PauseMenu : MonoBehaviour
         ClosePauseMenu();
         saveLoadPanel.SetActive(true);
         SaveLoadUI.Instance.isOpen = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 0f;
     }
 
     public void Settings()

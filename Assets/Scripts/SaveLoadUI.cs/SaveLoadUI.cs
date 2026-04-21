@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SaveLoadUI : MonoBehaviour
 {
@@ -75,7 +76,16 @@ public class SaveLoadUI : MonoBehaviour
 
     public void OnLoadSlot(int slot)
     {
-        SaveSystem.Instance.LoadGame(slot);
+        SaveData data = SaveSystem.Instance.GetSlotData(slot);
+        if (data == null)
+        {
+            return;
+        }
+        
+        GameManager.Instance.slotToLoad = slot;
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(
+        UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         CloseSaveLoad();
     }
 
