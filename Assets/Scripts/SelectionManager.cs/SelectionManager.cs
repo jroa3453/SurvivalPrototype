@@ -18,7 +18,7 @@ public class SelectionManager : MonoBehaviour
 
     public GameObject SelectedTree;
     public GameObject chopHolder;
-    private Text interactable;
+    
 
     private void Awake()
     {
@@ -109,11 +109,13 @@ public class SelectionManager : MonoBehaviour
                         return;
                     }
                 }
+                
+
+                var interactable = selectionTransform.GetComponent<InteractableObject>();
 
                 if(!interactable && !animal)
                 {
                     onTarget = false;
-
                     centerDotImage.gameObject.SetActive(true);
                     handIcon.gameObject.SetActive(false);
                 }
@@ -125,8 +127,6 @@ public class SelectionManager : MonoBehaviour
                 }
                 else
                 {
-                    // Interactable object check
-                    var interactable = selectionTransform.GetComponent<InteractableObject>();
                     if (interactable != null && interactable.playerInRange)
                     {
                         onTarget = true;

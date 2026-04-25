@@ -115,9 +115,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventroyItem
   isTrashable: 1
-  thisName: Stick
-  thisDescription: Dry stick
-  thisFunctionality: Used for crafting items or tools
+  thisName: Plank
+  thisDescription: plank made from a Log
+  thisFunctionality: Plank used for building.
   isConsumable: 0
   healthEffect: 0
   caloriesEffect: 0

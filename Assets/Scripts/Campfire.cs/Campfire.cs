@@ -9,7 +9,8 @@ public class Campfire : MonoBehaviour
 
     [Header("Fire Effects")]
     public ParticleSystem fireParticles;
-    public ParticleSystem smokeParticles;
+    public GameObject smokeEffect;
+    public GameObject newLightEffect;
     public bool isLit = false;
 
     [Header("Flicker Light")]
@@ -26,23 +27,45 @@ public class Campfire : MonoBehaviour
     void Start()
     {
         if (fireParticles != null) fireParticles.Stop();
-        if (smokeParticles != null) smokeParticles.Stop();
+        if (smokeEffect != null) smokeEffect.SetActive(false);
+        if (newLightEffect != null) newLightEffect.SetActive(false);
+        if (fireLight != null) fireLight.enabled = false;
     }
 
     public void LightFire()
     {
         isLit = true;
         if (fireParticles != null) fireParticles.Play();
-        if (smokeParticles != null) smokeParticles.Play();
         if (fireLight != null) fireLight.enabled = true;
+        if (smokeEffect != null) smokeEffect.SetActive(false);
+        if (newLightEffect != null) newLightEffect.SetActive(true);
+        
     }
 
     public void ExtinguishFire()
     {
         isLit = false;
         if (fireParticles != null) fireParticles.Stop();
-        if (smokeParticles != null) smokeParticles.Stop();
         if (fireLight != null) fireLight.enabled = false;
+        if (newLightEffect != null) newLightEffect.SetActive(false);
+
+        if(smokeEffect != null)
+        {
+           Debug.Log("Smoke Slot is filled - Playing Now!");
+           smokeEffect.SetActive(true);
+           StartCoroutine(StopSmokeAfterDelay(3f));
+        }
+        else
+        {
+            Debug.Log("Smoke Slot is EMPTY");
+        }
+    }
+
+
+    IEnumerator StopSmokeAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (smokeEffect != null) smokeEffect.SetActive(false);
     }
 
     void Update()
