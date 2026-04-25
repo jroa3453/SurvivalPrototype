@@ -27,6 +27,7 @@ public class ChoppableTree : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+            canBeChopped = true;
         }
     }
 

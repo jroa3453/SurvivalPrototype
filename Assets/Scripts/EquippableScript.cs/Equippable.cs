@@ -1,8 +1,6 @@
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using System.Collections;
-using System.Reflection.Emit;
 
 [RequireComponent(typeof(Animator))]
 public class EquippableItem : MonoBehaviour
@@ -15,6 +13,7 @@ public class EquippableItem : MonoBehaviour
     [Header("Animation")]
     public int damage;
     public bool canHitAnimals;
+    public bool canChopTrees;
     private bool canAttack = true;
     public string hitAnimationName; // one value for all weapons, set per prefab in Inspector
 
