@@ -14,6 +14,7 @@ public class Animal : MonoBehaviour
     [SerializeField] int MaxHealth;
     [SerializeField] int currentHealth; 
     public GameObject meatPreFab;
+    public GameObject rawHide;
     
     [Header("Sounds")]
      [SerializeField] AudioSource soundChannel;
@@ -63,8 +64,7 @@ public class Animal : MonoBehaviour
             }
             else
             {
-                PlayHitSound();
-                
+                PlayHitSound();  
             }
         }    
     }
@@ -73,8 +73,6 @@ public class Animal : MonoBehaviour
     {
         switch (thisAnimalType)
         {
-            
-
             case AnimalType.Rabbit:
                 soundChannel.PlayOneShot(rabbitDeathScream);
                 break;
@@ -98,8 +96,7 @@ public class Animal : MonoBehaviour
     {
         
       if (other.CompareTag("Player"))
-        {
-            
+        {         
             playerInRange = true;
         }
 
@@ -111,6 +108,4 @@ public class Animal : MonoBehaviour
             playerInRange = false;
         }
     }
-
-    
 }

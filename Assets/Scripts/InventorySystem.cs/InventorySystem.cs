@@ -39,12 +39,8 @@ public class InventorySystem : MonoBehaviour
     void Start()
     {
         isOpen = false;
-
         PopulateSlotList();
-
-
         Cursor.visible = false;
-
     }
 
 

@@ -18,24 +18,29 @@ public bool playerInRange;
     }
 
     void Update()
+{
+    if (Input.GetKeyDown(KeyCode.E))
     {
-        
-       if (Input.GetKeyDown(KeyCode.E) && playerInRange && SelectionManager.Instance.onTarget && SelectionManager.Instance.selectedObject == gameObject)
-       {
-            //if the inventory is not full then add the item to the inventory and destroy the item in the world
-            if(!InventorySystem.Instance.CheckIfFull())
-            {
-              InventorySystem.Instance.AddToInventory(ItemName);
-              Destroy(gameObject);
-
-            }
-            else
-            { 
-                Debug.Log("Inventory is full");
-            }
-       }
-
+        Debug.Log($"E pressed!");
+        Debug.Log($"playerInRange: {playerInRange}");
+        Debug.Log($"onTarget: {SelectionManager.Instance.onTarget}");
+        Debug.Log($"selectedObject == this: {SelectionManager.Instance.selectedObject == gameObject}");
+        Debug.Log($"Inventory full: {InventorySystem.Instance.CheckIfFull()}");
     }
+
+    if (Input.GetKeyDown(KeyCode.E) && playerInRange && SelectionManager.Instance.onTarget && SelectionManager.Instance.selectedObject == gameObject)
+    {
+        if(!InventorySystem.Instance.CheckIfFull())
+        {
+            InventorySystem.Instance.AddToInventory(ItemName);
+            Destroy(gameObject);
+        }
+        else
+        { 
+            Debug.Log("Inventory is full");
+        }
+    }
+}
 
 
 
@@ -44,7 +49,7 @@ public bool playerInRange;
         
       if (other.CompareTag("Player"))
         {
-            
+             Debug.Log("Trigger entered by: " + other.gameObject.name);
             playerInRange = true;
 
         }
