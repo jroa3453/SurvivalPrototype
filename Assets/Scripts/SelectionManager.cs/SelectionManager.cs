@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.VisualBasic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +17,6 @@ public class SelectionManager : MonoBehaviour
 
     public GameObject SelectedTree;
     public GameObject chopHolder;
-    
 
     private void Awake()
     {
@@ -56,16 +54,20 @@ public class SelectionManager : MonoBehaviour
                 }
 
                 chopHolder.SetActive(true);
-                GlobalState.Instance.resourceHealth    = choppableTree.treeHealth;
+                GlobalState.Instance.resourceHealth = choppableTree.treeHealth;
                 GlobalState.Instance.resourceMaxHealth = choppableTree.treeMaxHealth;
 
                 interaction_Info_UI.SetActive(false);
                 centerDotImage.gameObject.SetActive(true);
                 handIcon.gameObject.SetActive(false);
+
+                if (Input.GetMouseButtonDown(0) && choppableTree.canBeChopped && EquipSystem.Instance.IsHoldingWeapon())
+                {
+                    choppableTree.GetHit();
+                }
             }
             else
             {
-                // Clear tree selection if we look away
                 if (SelectedTree != null)
                 {
                     ChoppableTree old = SelectedTree.GetComponentInParent<ChoppableTree>();
@@ -74,7 +76,6 @@ public class SelectionManager : MonoBehaviour
                     chopHolder.SetActive(false);
                 }
 
-                // ✅ Animal check — now correctly inside Update with selectionTransform in scope
                 Animal animal = selectionTransform.GetComponentInParent<Animal>();
                 if (animal != null && animal.playerInRange)
                 {
@@ -82,7 +83,6 @@ public class SelectionManager : MonoBehaviour
                     {
                         interaction_text.text = "Loot";
                         interaction_Info_UI.SetActive(true);
-
                         centerDotImage.gameObject.SetActive(false);
                         handIcon.gameObject.SetActive(true);
 
@@ -94,26 +94,25 @@ public class SelectionManager : MonoBehaviour
                     }
                     else
                     {
-                    selectedObject = selectionTransform.gameObject;
-                    interaction_text.text = animal.animalName;
-                    interaction_Info_UI.SetActive(true);
-                    centerDotImage.gameObject.SetActive(true);
-                    handIcon.gameObject.SetActive(false);
+                        selectedObject = selectionTransform.gameObject;
+                        interaction_text.text = animal.animalName;
+                        interaction_Info_UI.SetActive(true);
+                        centerDotImage.gameObject.SetActive(true);
+                        handIcon.gameObject.SetActive(false);
 
-                    if (Input.GetMouseButtonDown(0) && EquipSystem.Instance.IsHoldingWeapon())
+                        if (Input.GetMouseButtonDown(0) && EquipSystem.Instance.IsHoldingWeapon())
                         {
                             EquippableItem equippedItem = EquipSystem.Instance.selectedItem.GetComponent<EquippableItem>();
                             if (equippedItem != null && equippedItem.canHitAnimals)
-                            StartCoroutine(DealDamageTo(animal, 0.3f, EquipSystem.Instance.GetWeaponDamage()));
+                                StartCoroutine(DealDamageTo(animal, 0.3f, EquipSystem.Instance.GetWeaponDamage()));
                         }
                         return;
                     }
                 }
-                
 
                 var interactable = selectionTransform.GetComponent<InteractableObject>();
 
-                if(!interactable && !animal)
+                if (!interactable && !animal)
                 {
                     onTarget = false;
                     centerDotImage.gameObject.SetActive(true);
@@ -161,7 +160,6 @@ public class SelectionManager : MonoBehaviour
         }
         else
         {
-            // Ray hit nothing
             if (SelectedTree != null)
             {
                 ChoppableTree old = SelectedTree.GetComponentInParent<ChoppableTree>();
@@ -178,7 +176,6 @@ public class SelectionManager : MonoBehaviour
         }
     }
 
-
     private void Loot(Lootable lootable)
     {
         if (lootable.wasLootCalculated == false)
@@ -187,7 +184,7 @@ public class SelectionManager : MonoBehaviour
 
             foreach (LootPossibility loot in lootable.possibleLoot)
             {
-                var  lootAmount = UnityEngine.Random.Range(loot.amountMin, loot.amountMax + 1);
+                var lootAmount = UnityEngine.Random.Range(loot.amountMin, loot.amountMax + 1);
                 if (lootAmount != 0)
                 {
                     LootRecieved lT = new LootRecieved();
@@ -206,18 +203,16 @@ public class SelectionManager : MonoBehaviour
         {
             for (int i = 0; i < lootRecieved.amount; i++)
             {
-                GameObject lootSpawn = Instantiate(Resources.Load<GameObject>(lootRecieved.item.name+"_Model"),
-                new Vector3(lootSpawnPosition.x, lootSpawnPosition.y+0.2f, lootSpawnPosition.z),
-                Quaternion.Euler(0,0,0));
+                GameObject lootSpawn = Instantiate(Resources.Load<GameObject>(lootRecieved.item.name + "_Model"),
+                new Vector3(lootSpawnPosition.x, lootSpawnPosition.y + 0.2f, lootSpawnPosition.z),
+                Quaternion.Euler(0, 0, 0));
             }
         }
-
     }
 
-    // ✅ Placeholder — replace with your actual DealDamageTo signature
     IEnumerator DealDamageTo(Animal animal, float delay, int damage)
     {
-        yield return new WaitForSeconds(damage);
+        yield return new WaitForSeconds(delay);
         animal.TakeDamage(damage);
     }
 
@@ -232,7 +227,7 @@ public class SelectionManager : MonoBehaviour
         SelectedTree = null;
         chopHolder.SetActive(false);
 
-        GlobalState.Instance.resourceHealth    = 0f;
+        GlobalState.Instance.resourceHealth = 0f;
         GlobalState.Instance.resourceMaxHealth = 0f;
     }
 
