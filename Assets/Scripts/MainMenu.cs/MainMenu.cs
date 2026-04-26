@@ -41,6 +41,8 @@ public class MainMenu : MonoBehaviour
 
     public void NewGame()
     {
+        GameManager.Instance.isNewGame = true;
+        GameManager.Instance.slotToLoad = -1;
         SceneManager.LoadScene("MainSceneProtoTypeSurvival.Unity");
     }
 

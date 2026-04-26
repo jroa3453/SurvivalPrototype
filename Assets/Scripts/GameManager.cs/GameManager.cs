@@ -4,6 +4,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public int slotToLoad = -1;
+    public bool isNewGame = false;
 
     void Awake()
     {
