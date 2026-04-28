@@ -118,6 +118,16 @@ public class InventorySystem : MonoBehaviour
                 Debug.LogError("No empty slot found in inventory!");
                 return;
             }
+            Debug.Log("Trying to load: " + itemname);
+            GameObject loaded = Resources.Load<GameObject>(itemname);
+            Debug.Log("Loaded: " + loaded);
+
+
+            if (loaded == null)
+            {
+                Debug.LogError("Could not find prefab in Resources: " + itemname);
+                return;
+            }
 
             itemToAdd = Instantiate(
                 Resources.Load<GameObject>(itemname),

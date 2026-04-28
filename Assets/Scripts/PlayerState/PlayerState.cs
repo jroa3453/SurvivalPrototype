@@ -106,4 +106,10 @@ public class PlayerState : MonoBehaviour
     {
         currentHydrationPercent = Mathf.Clamp(value, 0f, maxHydrationPercent);
     }
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+        Debug.Log("Player took damage! Health: " + currentHealth);
+    }
 }

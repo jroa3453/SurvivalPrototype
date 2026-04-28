@@ -546,6 +546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MouseMovement
   mouseSensitivity: 225
+  cameraHolder: {fileID: 0}
 --- !u!114 &24606057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,6 +560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   controller: {fileID: 24606051}
+  sprintSpeed: 16
   speed: 7
   gravity: -19.62
   jumpHeight: 3
@@ -567,6 +569,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  isSprinting: 0
 --- !u!1001 &26520227
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1253,7 +1256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffdd4b81276be1048935e1e1fa1e70a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HungerBar
-  hungerCounter: {fileID: 355436872}
+  caloriesCounter: {fileID: 0}
   playerState: {fileID: 368451152}
 --- !u!1 &131636843
 GameObject:
@@ -2748,8 +2751,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerState
   currentHealth: 0
   maxHealth: 100
-  currentHunger: 0
-  maxHunger: 2000
+  currentCalories: 0
+  maxCalories: 0
   currentHydrationPercent: 0
   maxHydrationPercent: 100
   playerModel: {fileID: 24606050}
@@ -3431,7 +3434,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5778,7 +5781,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6350,8 +6353,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipSystem
   quickSlotsPanel: {fileID: 787716966}
+  numbersHolder: {fileID: 0}
+  toolHolder: {fileID: 0}
+  modelPosition: {x: 0.3, y: -0.3, z: 0.6}
+  modelRotation: {x: 0, y: 0, z: 0}
+  modelScale: {x: 1, y: 1, z: 1}
+  audioSource: {fileID: 0}
+  equipSound: {fileID: 0}
   quickSlotsList: []
   itemList: []
+  selectedNumber: -1
+  selectedItem: {fileID: 0}
 --- !u!1 &1143006923
 GameObject:
   m_ObjectHideFlags: 0
@@ -6894,7 +6906,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8206,12 +8218,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CraftingSystem
   craftingScreenUI: {fileID: 1294471144}
   toolsScreenUI: {fileID: 131636843}
-  inventoryItemList: []
+  survivalScreenUI: {fileID: 0}
+  refineScreenUI: {fileID: 0}
+  ToolsCategoryScreen: {fileID: 1826364433}
+  SurvivalCategoryScreen: {fileID: 0}
+  RefineCategoryScreen: {fileID: 0}
   toolsBTN: {fileID: 1826364435}
+  survivalBTN: {fileID: 0}
+  refineBTN: {fileID: 0}
   craftAxeBTN: {fileID: 307747594}
+  craftPlankBTN: {fileID: 0}
   AxeReq1: {fileID: 404230296}
   AxeReq2: {fileID: 365042317}
-  ToolsCategoryScreen: {fileID: 1826364433}
+  PlankReq1: {fileID: 0}
+  inventoryItemList: []
   isOpen: 0
 --- !u!4 &1473911067
 Transform:
@@ -10676,7 +10696,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11134,6 +11154,8 @@ MonoBehaviour:
   interaction_Info_UI: {fileID: 1740035726}
   centerDotImage: {fileID: 1766574997}
   handIcon: {fileID: 557595023}
+  SelectedTree: {fileID: 0}
+  chopHolder: {fileID: 0}
 --- !u!4 &2051111047
 Transform:
   m_ObjectHideFlags: 0
