@@ -61,7 +61,6 @@ public class ChoppableTree : MonoBehaviour
     public void GetHit()
     {
         animator.SetTrigger("shake");
-
         treeHealth -= 10f;
         treeHealth = Mathf.Clamp(treeHealth, 0f, treeMaxHealth);
 
@@ -69,23 +68,21 @@ public class ChoppableTree : MonoBehaviour
         GlobalState.Instance.resourceHealth = treeHealth;
         GlobalState.Instance.resourceMaxHealth = treeMaxHealth;
 
-        // ✅ Just play the chop sound directly
-        if (chopSound != null)
-            chopSound.Play();
-        else
-            Debug.LogWarning("chopSound is not assigned on " + gameObject.name);
+        // ← Add delay to match animation
+        StartCoroutine(PlayChopSound(0.3f));
 
         if (treeHealth <= 0f)
         {
-            Debug.Log("Tree has been chopped down");
             TreeFallingSound.Play();
             TreeisDead();
-
-            if (treeisChoppedScript != null)
-                treeisChoppedScript.ChopTreeDown();
-            else
-                Debug.Log("TreeisChopped script is NULL");
         }
+    }
+
+    IEnumerator PlayChopSound(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (chopSound != null)
+            chopSound.Play();
     }
 
     void TreeisDead()
@@ -100,15 +97,46 @@ public class ChoppableTree : MonoBehaviour
         GlobalState.Instance.resourceHealth    = 0f;
         GlobalState.Instance.resourceMaxHealth = 0f;
 
-        // Spawn the chopped tree stump
-        Instantiate(Resources.Load<GameObject>("ChoppedTree"), 
-            new Vector3(treePosition.x, treePosition.y, treePosition.z), 
-            Quaternion.identity);
+        // ── Stump ────────────────────────────────────────────────────────────
+        GameObject stumpPrefab = Resources.Load<GameObject>("ChoppedTree");
+        if (stumpPrefab == null)
+            Debug.LogError("[Tree] Resources.Load failed: 'ChoppedTree' not found in Resources/");
+        else
+            Instantiate(stumpPrefab, treePosition, Quaternion.identity);
 
-        // Destroy THIS object (Tree_Parent) — not parents above it
-        Destroy(gameObject);
+        // ── Logs ─────────────────────────────────────────────────────────────
+        GameObject logPrefab = Resources.Load<GameObject>("Log_Model");
+        if (logPrefab == null)
+            Debug.LogError("[Tree] Resources.Load failed: 'Log_Model' not found in Resources/");
+        else
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                Vector3 spawnPos = new Vector3(
+                    treePosition.x + Random.Range(-1f, 1f),
+                    treePosition.y + 1.5f,   // raised higher — avoids terrain clip
+                    treePosition.z + Random.Range(-1f, 1f));
+                Instantiate(logPrefab, spawnPos, Quaternion.identity);
+            }
+        }
+
+        // ── Sticks ───────────────────────────────────────────────────────────
+        GameObject stickPrefab = Resources.Load<GameObject>("Stick_Model");
+        if (stickPrefab == null)
+            Debug.LogError("[Tree] Resources.Load failed: 'Stick_Model' not found in Resources/");
+        else
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                Vector3 spawnPos = new Vector3(
+                    treePosition.x + Random.Range(-1f, 1f),
+                    treePosition.y + 1.5f,
+                    treePosition.z + Random.Range(-1f, 1f));
+                Instantiate(stickPrefab, spawnPos, Quaternion.identity);
+            }
+        }
+
+        // ── Delay destroy so TreeFallingSound isn't cut off ──────────────────
+        Destroy(gameObject, 0.1f);
     }
-
-
-
 }

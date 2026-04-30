@@ -61,6 +61,12 @@ public class SelectionManager : MonoBehaviour
                 centerDotImage.gameObject.SetActive(true);
                 handIcon.gameObject.SetActive(false);
 
+                 if (Input.GetMouseButtonDown(0))
+                {
+                    Debug.Log("Clicked! IsHoldingWeapon: " + EquipSystem.Instance.IsHoldingWeapon());
+                    Debug.Log("canBeChopped: " + choppableTree.canBeChopped);
+                }
+
                 if (Input.GetMouseButtonDown(0) && choppableTree.canBeChopped && EquipSystem.Instance.IsHoldingWeapon())
                 {
                     choppableTree.GetHit();
