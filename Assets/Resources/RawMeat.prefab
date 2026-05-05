@@ -119,8 +119,13 @@ MonoBehaviour:
   thisDescription: Piece of meat Dropped from a Various animals.
   thisFunctionality: RawMeat that needs to be cooked to restore Health.
   isConsumable: 1
+<<<<<<< HEAD
   healthEffect: 0
   caloriesEffect: 0
+=======
+  healthEffect: 10
+  caloriesEffect: 10
+>>>>>>> 0a5989b6fd4b22784c4c20e3b41f614aac0069e4
   hydrationEffect: 0
   isEquippable: 0
   isInsideQuickSlot: 0

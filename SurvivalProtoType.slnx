@@ -39,6 +39,10 @@
   <Project Path="Unity.Postprocessing.Editor.csproj" />
   <Project Path="Unity.VisualScripting.Flow.csproj" />
   <Project Path="Unity.PerformanceTesting.csproj" />
+<<<<<<< HEAD
+=======
+  <Project Path="Assembly-CSharp.csproj" />
+>>>>>>> 0a5989b6fd4b22784c4c20e3b41f614aac0069e4
   <Project Path="Unity.TextMeshPro.csproj" />
   <Project Path="Unity.TextMeshPro.Editor.csproj" />
   <Project Path="Unity.Burst.Editor.csproj" />
@@ -50,7 +54,10 @@
   <Project Path="Unity.Postprocessing.Runtime.csproj" />
   <Project Path="Unity.2D.Sprite.Editor.csproj" />
   <Project Path="Unity.AI.Navigation.Editor.csproj" />
+<<<<<<< HEAD
   <Project Path="Assembly-CSharp.csproj" />
+=======
+>>>>>>> 0a5989b6fd4b22784c4c20e3b41f614aac0069e4
   <Project Path="Unity.Multiplayer.Center.Common.csproj" />
   <Project Path="Unity.ProBuilder.KdTree.csproj" />
   <Project Path="Unity.ProBuilder.AddOns.Editor.csproj" />

@@ -18,6 +18,14 @@ public class DayNightCycle : MonoBehaviour
     public float dayDrainMultiplier = 1f;
     public float nightDrainMultiplier = 2f;
 
+<<<<<<< HEAD
+=======
+    [Header("Skybox")]
+    public Material daySkybox;
+     public Material nightSkybox;
+
+
+>>>>>>> 0a5989b6fd4b22784c4c20e3b41f614aac0069e4
     public static DayNightCycle Instance;
 
     void Awake()
@@ -44,6 +52,13 @@ public class DayNightCycle : MonoBehaviour
     void UpdateAmbient()
     {
         RenderSettings.ambientLight = ambientColor.Evaluate(currentTime);
+<<<<<<< HEAD
+=======
+        if (IsNight())
+            RenderSettings.skybox = nightSkybox;
+        else
+            RenderSettings.skybox = daySkybox;
+>>>>>>> 0a5989b6fd4b22784c4c20e3b41f614aac0069e4
     }
 
     public bool IsNight()

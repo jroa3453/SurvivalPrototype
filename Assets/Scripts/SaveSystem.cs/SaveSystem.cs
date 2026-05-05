@@ -73,7 +73,15 @@ public class SaveSystem : MonoBehaviour
         PlayerState.Instance.SetCalories(data.currentCalories);
         PlayerState.Instance.SetHydration(data.currentHydration);
 
+<<<<<<< HEAD
         DayNightCycle.Instance.currentTime = data.currentTime;
+=======
+        // Only load time if it's a continue, not a new game
+        if (data.currentTime > 0)
+            DayNightCycle.Instance.currentTime = data.currentTime;
+        else
+            DayNightCycle.Instance.currentTime = 0.25f;
+>>>>>>> 0a5989b6fd4b22784c4c20e3b41f614aac0069e4
 
         InventorySystem.Instance.itemList.Clear();
         foreach (string item in data.inventoryItems)

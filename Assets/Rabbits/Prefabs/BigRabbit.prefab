@@ -733,7 +733,6 @@ GameObject:
   - component: {fileID: 2000817720402016682}
   - component: {fileID: 6480546467571661752}
   - component: {fileID: 6843715900142411247}
-  - component: {fileID: -8350775491235494266}
   - component: {fileID: 7432762675368922823}
   - component: {fileID: 5217376453109142571}
   - component: {fileID: 1998343568471851742}
@@ -851,20 +850,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &-8350775491235494266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1588090451174212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 703f31359ba4b9d41ad15ea41acde11f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  playerInRange: 0
-  ItemName: Big Rabbit
 --- !u!65 &7432762675368922823
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -902,7 +887,12 @@ MonoBehaviour:
   playerInRange: 0
   MaxHealth: 40
   currentHealth: 0
+<<<<<<< HEAD
   meatPreFab: {fileID: 0}
+=======
+  meatPreFab: {fileID: 7220698693941125114, guid: a99ae0defa2b00a439194713da7ac854, type: 3}
+  RawHide_Model: {fileID: 6380927221624410909, guid: 2455881e78724a046bb3d8bdf03196a3, type: 3}
+>>>>>>> 0a5989b6fd4b22784c4c20e3b41f614aac0069e4
   soundChannel: {fileID: 1998343568471851742}
   rabbitHitScream: {fileID: 8300000, guid: 98c18bd4c077f5c4687d3d624c5bad7f, type: 3}
   rabbitDeathScream: {fileID: 8300000, guid: c34fae3b5a9025f499d860d131815c8a, type: 3}
@@ -1020,12 +1010,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lootable
   possibleLoot:
+<<<<<<< HEAD
   - item: {fileID: 0}
     amountMin: 0
     amountMax: 0
   - item: {fileID: 0}
     amountMin: 0
     amountMax: 0
+=======
+  - item: {fileID: 6539569225657912983, guid: 8087427823189a745be3fa24ff6e19f1, type: 3}
+    amountMin: 1
+    amountMax: 1
+  - item: {fileID: 6539569225657912983, guid: d967b3bda13974e4480300723a13ed81, type: 3}
+    amountMin: 1
+    amountMax: 1
+>>>>>>> 0a5989b6fd4b22784c4c20e3b41f614aac0069e4
   finalLoot: []
   wasLootCalculated: 0
 --- !u!1 &1593323770353162

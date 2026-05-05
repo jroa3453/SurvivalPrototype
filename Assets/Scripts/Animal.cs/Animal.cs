@@ -14,7 +14,11 @@ public class Animal : MonoBehaviour
     [SerializeField] int MaxHealth;
     [SerializeField] int currentHealth; 
     public GameObject meatPreFab;
+<<<<<<< HEAD
     public GameObject rawHide;
+=======
+    public GameObject RawHide_Model;
+>>>>>>> 0a5989b6fd4b22784c4c20e3b41f614aac0069e4
     
     [Header("Sounds")]
      [SerializeField] AudioSource soundChannel;

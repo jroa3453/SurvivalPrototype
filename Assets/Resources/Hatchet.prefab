@@ -15,6 +15,11 @@ GameObject:
   - component: {fileID: 7676587876556554889}
   - component: {fileID: -283959097756603035}
   - component: {fileID: 7004716459126568716}
+<<<<<<< HEAD
+=======
+  - component: {fileID: -5149296899065640075}
+  - component: {fileID: 508543858396908126}
+>>>>>>> 0a5989b6fd4b22784c4c20e3b41f614aac0069e4
   m_Layer: 5
   m_Name: Hatchet
   m_TagString: Untagged
@@ -123,7 +128,11 @@ MonoBehaviour:
   healthEffect: 0
   caloriesEffect: 0
   hydrationEffect: 0
+<<<<<<< HEAD
   isEquippable: 0
+=======
+  isEquippable: 1
+>>>>>>> 0a5989b6fd4b22784c4c20e3b41f614aac0069e4
   isInsideQuickSlot: 0
   isSelected: 0
 --- !u!114 &7004716459126568716
@@ -139,3 +148,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   weaponDamage: 20
+<<<<<<< HEAD
+=======
+--- !u!95 &-5149296899065640075
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6254573071304021827}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &508543858396908126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6254573071304021827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed6f5d4632b46b64ab495bab5efe6b34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquippableItem
+  animator: {fileID: 0}
+  attackCooldown: 1
+  damage: 15
+  canHitAnimals: 1
+  canChopTrees: 1
+  hitAnimationName: Equip
+>>>>>>> 0a5989b6fd4b22784c4c20e3b41f614aac0069e4

@@ -72,6 +72,15 @@ public class EquipSystem : MonoBehaviour
 
     public bool IsHoldingWeapon()
     {
+<<<<<<< HEAD
+=======
+        Debug.Log("selectedItem: " + selectedItem);
+        if (selectedItem != null)
+        {
+            EquippableItem eq = selectedItem.GetComponent<EquippableItem>();
+            Debug.Log("EquippableItem found: " + eq);
+        }
+>>>>>>> 0a5989b6fd4b22784c4c20e3b41f614aac0069e4
         return selectedItem != null && selectedItem.GetComponent<EquippableItem>() != null;
     }
 
